@@ -8,7 +8,7 @@ SNAIL.blockWidth  = 48;
 SNAIL.blockHeight = 48;
 
 SNAIL.numBlocksWidth  = 100;
-SNAIL.numBlocksHeight = 50;
+SNAIL.numBlocksHeight = 8;
 
 SNAIL.canvasRenderWidth  = SNAIL.numBlocksWidth  * SNAIL.blockWidth; 
 SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
@@ -47,12 +47,17 @@ SNAIL.main = function(){
 
 window.onload = SNAIL.main;
 
+
+SNAIL.drawMap = drawMap;
 SNAIL.render = function(){
 
+	SNAIL.drawMap();
 };
 
 SNAIL.updateModel = function(dt){
 
+	//Random
+	staticBlocks[8*Math.random()|0][8*Math.random()|0] = Math.random() < 0.5 ? 'A' : 'B';
 };
 
 
