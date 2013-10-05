@@ -81,7 +81,7 @@ SNAIL.render = function(time){
     SNAIL.dog.draw(time, 860+offX, 1296+offY);
   }
   if (SNAIL.level >= 3) {
-    SNAIL.cat.draw(time, 1588+offX, 1296+offY);
+    SNAIL.cat.draw(time, 1588+offX, 1104-48+offY);
   }
   SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height*2/3);
   SNAIL.drawMap(offX,offY);
