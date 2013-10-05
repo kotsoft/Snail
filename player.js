@@ -5,31 +5,22 @@ SNAIL.player = {
   init: function(x, y) {
     this.x = this.xprev = x;
     this.y = this.yprev = y;
-
-    // Make canvas for both the shell and body so that they
-    // can be individually transformed.
-    var shellImg = SNAIL.images['snail-body-shl-prpl'];
-    this.shellCanvas = document.createElement('canvas');
-    this.shellCanvas.width = SNAIL.blockWidth;
-    this.shellCanvas.height = SNAIL.blockHeight;
-    this.shellCtx = this.shellCanvas.getContext('2d');
-    this.shellCtx.drawImage(shellImg, 0, 0);
-
-    var bodyImg = SNAIL.images['snail-body-blu'];
-    this.bodyCanvas = document.createElement('canvas');
-    this.bodyCanvas.width = SNAIL.blockWidth;
-    this.bodyCanvas.height = SNAIL.blockHeight;
-    this.bodyCtx = this.bodyCanvas.getContext('2d');
-    this.bodyCtx.drawImage(bodyImg, 0, 0);
+    this.shellImg = SNAIL.images['snail-body-shl-prpl'];
+    this.bodyImg1 = SNAIL.images['snail-body-blu'];
+    this.bodyImg2 = SNAIL.images['snail-body-blu-squish'];
   },
-  update: function(dt){
+  update: function(dt, time){
     var dx = this.dx = this.x - this.xprev;
     if (this.moveLeft) {
       dx -= .8;
-    }
-    if (this.moveRight) {
+      this.moveTime++;
+    } else if (this.moveRight) {
       dx += .8;
+      this.moveTime++;
+    } else {
+      this.moveTime = 0;
     }
+
     if (dx > 10) {
       dx = 10;
     } else if (dx < -10) {
@@ -58,16 +49,18 @@ SNAIL.player = {
   },
   draw: function(time, x, y) {
     var ctx = SNAIL.ctx;
-    this.bodyCtx.scale(-1, 1);
+    var bodyImg = (!this.moveLeft && !this.moveRight) &&
+      this.dx === 0 || this.moveTime % 26 < 13
+      ? this.bodyImg1 : this.bodyImg2;
     if (this.faceLeft) {
       ctx.save();
       ctx.scale(-1, 1);
       x = -x - SNAIL.blockWidth;
-      ctx.drawImage(this.bodyCanvas, x, y);
+      ctx.drawImage(bodyImg, x, y);
       this.drawShell(time, x, y);
       ctx.restore();
     } else {
-      ctx.drawImage(this.bodyCanvas, x, y);
+      ctx.drawImage(bodyImg, x, y);
       this.drawShell(time, x, y);
     }
   },
@@ -77,7 +70,7 @@ SNAIL.player = {
     ctx.save();
     ctx.translate(x + 22,y + 26);
     ctx.rotate(time);
-    ctx.drawImage(this.shellCanvas, -20, -28);
+    ctx.drawImage(this.shellImg, -20, -28);
     ctx.restore();
   },
 }
