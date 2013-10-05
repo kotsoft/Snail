@@ -17,12 +17,16 @@ SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 SNAIL.level = 0;
 SNAIL.currentText = "";
 SNAIL.matches = [];
+SNAIL.gravity = .8;
 
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
-  SNAIL.canvas.width = SNAIL.canvasRenderWidth;
-  SNAIL.canvas.height = SNAIL.canvasRenderHeight;
+  // SNAIL.canvas.width = SNAIL.canvasRenderWidth;
+  // SNAIL.canvas.height = SNAIL.canvasRenderHeight;
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
+
+	SNAIL.canvas.width = 800;
+	SNAIL.canvas.height = SNAIL.canvasRenderHeight;
 
 	SNAIL.initEvents();
 	SNAIL.initBlocks();
@@ -32,8 +36,19 @@ SNAIL.startGame = function(){
 
 SNAIL.initBlocks = function(){
 	for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
-		SNAIL.staticBlocks.push(['A',0,0,0,0,0,0,'B']);
+		// SNAIL.staticBlocks.push(['A',0,0,0,0,0,0,'B']);
+		if (x % 4 == 0) {
+	      SNAIL.staticBlocks.push(['C','A','E','P',0,0,'B','A']);
+	    } else {
+	    	if(Math.random() < 0.2){
+		      SNAIL.staticBlocks.push(['C','A','E','P',0,0,0,'A']);
+
+		  }else{
+		      SNAIL.staticBlocks.push(['C','A','E',0,0,0,0,'A']);
+		  }
+	    }
 	}
+
 };
 
 SNAIL.animloop = function(time){
@@ -54,12 +69,10 @@ SNAIL.main = function(){
 };
 window.onload = SNAIL.main;
 
-//Hackish binding
-// SNAIL.drawMap = drawMap;
 SNAIL.render = function(){
 	SNAIL.drawBackground();
-	SNAIL.drawMap();
-	SNAIL.player.draw();
+	SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,0);
+	SNAIL.player.draw(SNAIL.canvas.width/2,SNAIL.player.y);
 };
 
 SNAIL.loadImages = function(callback) {
@@ -109,17 +122,17 @@ SNAIL.updateModel = function(dt){
 };
 
 SNAIL.drawBackground = function() {
-  SNAIL.ctx.clearRect(0, 0, SNAIL.width, SNAIL.height);
+  SNAIL.ctx.clearRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
 };
 
-SNAIL.drawMap = function() {
+SNAIL.drawMap = function(offX,offY) {
   for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
     for (var y = 0; y < SNAIL.numBlocksHeight; y++) {
       var block = SNAIL.images[SNAIL.staticBlocks[x][y]];
       if (typeof block == 'object') {
         var imgX = x * SNAIL.blockWidth;
-        var imgY = y * SNAIL.height;
-        SNAIL.ctx.drawImage(block, imgX, imgY);
+        var imgY = y * SNAIL.blockHeight;
+        SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
       }
     }
   }
@@ -187,7 +200,7 @@ SNAIL.staticCollision = function(x, y, dx, dy) {
         var vx = x-i*SNAIL.blockWidth;
         var vy = y-j*SNAIL.blockHeight;
         if (vx > -SNAIL.blockWidth && vx < SNAIL.blockWidth && vy > -SNAIL.blockHeight && vy < SNAIL.blockHeight) {
-          if (Math.abs(vx) > Math.abs(vy)) {
+          if (Math.abs(vx) > Math.abs(vy-dy-SNAIL.gravity)) {
             if (vx < 0) {
               x -= SNAIL.blockWidth+vx;
             } else {
