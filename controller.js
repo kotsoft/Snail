@@ -98,24 +98,41 @@ SNAIL.drawWords = function(offX,offY){
 			SNAIL.matches[i] = i;
 		}
 	}
+
 	var numWords = SNAIL.matches.length;//SNAIL.levelWords[SNAIL.level].length;
 	// console.log(SNAIL.matches,SNAIL.currentText)
 
+	SNAIL.ctx.save();
 	for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
 		var word = SNAIL.levelWords[SNAIL.level][i];
 		for(var j = 0; j < word.length; j++){
-			var block = SNAIL.images['Z'];
+			var block = SNAIL.images[word[j].toUpperCase()];
 			if (typeof block == 'object') {
 				var imgX = j * SNAIL.blockWidth;
 				var imgY = i * SNAIL.blockHeight;
-				SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
+				if(SNAIL.matches.indexOf(i) >= 0 && word[j] == currentText[j]){
+					
+					//Draw set block here
+					SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
+
+				}else{
+					SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
+
+					if(SNAIL.matches.indexOf(i) < 0){
+						SNAIL.ctx.fillStyle = 'rgba(255,0,0,0.4)';
+					}else{
+						SNAIL.ctx.fillStyle = 'rgba(255,255,255,0.4)';
+					}
+					SNAIL.ctx.fillRect(imgX+offX, imgY+offY, SNAIL.blockWidth, SNAIL.blockHeight);					
+				}
 			}
 		}
 	}
+	SNAIL.ctx.restore();
 
-	for(var i = 0; i < numWords; i++){
-		var word = SNAIL.levelWords[SNAIL.level][SNAIL.matches[i]];
-		for(var j = currentText.length; j < word.length; j++){
+	for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
+		var word = SNAIL.levelWords[SNAIL.level][i];
+		for(var j = currentText.length; j < word.length && SNAIL.matches.indexOf(i) >= 0; j++){
 			var block = SNAIL.images[word[j].toUpperCase()];
 			if (typeof block == 'object') {
 				var imgX = j * SNAIL.blockWidth;
