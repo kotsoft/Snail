@@ -56,7 +56,7 @@ SNAIL.animloop = function(time){
     SNAIL.render(time);
 
     var dt = time - SNAIL.lastFrameTime;
-	SNAIL.updateModel(dt);
+	SNAIL.updateModel(dt, time);
 
 	SNAIL.lastFrameTime = time;
     requestNextAnimationFrame(SNAIL.animloop);
@@ -110,14 +110,14 @@ function getImage(key) {
   };
 }
 
-SNAIL.updateModel = function(dt){
+SNAIL.updateModel = function(dt, time){
 
 	//SNAIL.player.update(dt/1000*60);
 
 	//Random
 	//SNAIL.staticBlocks[8*Math.random()|0][8*Math.random()|0] = Math.random() < 0.5 ? 'C' : 'B';
 
-	SNAIL.player.update(1);
+	SNAIL.player.update(1, time);
 	// console.log(dt);
 
 };
