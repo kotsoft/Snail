@@ -23,7 +23,7 @@ SNAIL.gravity = .8;
 SNAIL.bgColor = '#fff';
 
 // Variables for editor
-SNAIL.edit = true;
+SNAIL.edit = false;
 SNAIL.currentBlock = 0;
 
 SNAIL.startGame = function(){
@@ -44,6 +44,7 @@ SNAIL.startGame = function(){
 	SNAIL.player.init(48,1344);
   SNAIL.dog = new Animal('dog');
   SNAIL.cat = new Animal('cat');
+}
 
 SNAIL.initBlocks = function(){
   SNAIL.staticBlocks = SNAIL.levelData;
@@ -73,8 +74,16 @@ SNAIL.render = function(time){
 
 	SNAIL.drawBackground(time);
 	
+  var offX = -SNAIL.player.x+SNAIL.canvas.width/2;
+  var offY = -SNAIL.player.y+SNAIL.canvas.height/2;
+  if (SNAIL.level >= 1) {
+    SNAIL.dog.draw(time, 860+offX, 1296+offY);
+  }
+  if (SNAIL.level >= 3) {
+    SNAIL.cat.draw(time, 1588+offX, 1296+offY);
+  }
   SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height/2);
-  SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,-SNAIL.player.y+SNAIL.canvas.height/2);
+  SNAIL.drawMap(offX,offY);
 
   if (SNAIL.edit) {
     var length = SNAIL.imageFiles.length;
