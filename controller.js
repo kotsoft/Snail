@@ -305,16 +305,19 @@ SNAIL.hitLetter = function(letter){
 	
 	if(!isMatch){
 		console.log("failure :(");
+		SNAIL.player.state = "sad";
 		SNAIL.currentText = "";
 	}else{
 		if(matchedWordCompletely){
 			console.log("completly!");
+			SNAIL.player.state = "happy";
 
 			SNAIL.level++;
 			matches = [];
 			SNAIL.currentText = "";
 		}else{
 			SNAIL.currentText = SNAIL.currentText+letter;
+			SNAIL.player.state = "happy";
 			console.log(matches,"matching... keep going!");
 		}
 	}
