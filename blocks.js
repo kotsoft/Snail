@@ -67,6 +67,8 @@ SNAIL.imageFiles = [
   'grass-top-pnkyel',
   'snail-body-blu-squish',
   'snail-body-blu',
+  'snail-body-yel-squish',
+  'snail-body-yel',
   'snail-body-pnk-squish',
   'snail-body-pnk',
   'snail-body-shl-pnk',
