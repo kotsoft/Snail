@@ -21,6 +21,9 @@ SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
 
+	SNAIL.canvas.width = 800;
+	SNAIL.canvas.height = SNAIL.canvasRenderHeight;
+
 	SNAIL.initEvents();
 	SNAIL.initBlocks();
 
