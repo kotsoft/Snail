@@ -8,7 +8,7 @@ SNAIL.blockWidth  = 48;
 SNAIL.blockHeight = 48;
 
 SNAIL.numBlocksWidth  = 100;
-SNAIL.numBlocksHeight = 8;
+SNAIL.numBlocksHeight = 30;
 
 // Width only needs to be as big as the view.
 SNAIL.canvasRenderWidth  = SNAIL.numBlocksHeight  * SNAIL.blockWidth;
@@ -25,8 +25,8 @@ SNAIL.startGame = function(){
   // SNAIL.canvas.height = SNAIL.canvasRenderHeight;
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
 
-	SNAIL.canvas.width = 800;
-	SNAIL.canvas.height = SNAIL.canvasRenderHeight;
+	SNAIL.canvas.width = window.innerWidth;
+	SNAIL.canvas.height = window.innerHeight;
 
 	SNAIL.initEvents();
 	SNAIL.initBlocks();
@@ -35,6 +35,7 @@ SNAIL.startGame = function(){
 };
 
 SNAIL.initBlocks = function(){
+
 	for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
 		// SNAIL.staticBlocks.push(['A',0,0,0,0,0,0,'B']);
 		if (x % 4 == 0) {
