@@ -65,7 +65,35 @@ SNAIL.hitLetter = function(letter){
 
 };
 
+SNAIL.staticCollision = function(x, y) {
+  var cellX = ~~(x/SNAIL.blockSize);
+  var cellY = ~~(y/SNAIL.blockSize);
 
+  for (var i = cellX-1; i < cellX+2; i++) {
+    for (var j = cellY-1; j < cellY+2; j++) {
+      if (i > -1 && j > -1 && i < SNAIL.numBlocksWidth && j < SNAIL.numBlocksHeight && SNAIL.staticBlocks[i][j]) {
+        var vx = x-i*SNAIL.blockSize;
+        var vy = y-j*SNAIL.blockSize;
+        if (vx > -SNAIL.blockSize && vx < SNAIL.blockSize && vy > -SNAIL.blockSize && vy < SNAIL.blockSize) {
+          if (Math.abs(vx) > Math.abs(vy)) {
+            if (vx < 0) {
+              x -= SNAIL.blockSize+vx;
+            } else {
+              x += SNAIL.blockSize-vx;
+            }
+          } else {
+            if (vy < 0) {
+              y -= SNAIL.blockSize+vy;
+            } else {
+              y += SNAIL.blockSize-vy;
+            }
+          }
+        }
+      }
+    }
+  }
+  return [x, y]
+}
 
 // **** EVENTS **** //
 SNAIL.mouseState = 'up';
