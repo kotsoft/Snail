@@ -272,7 +272,11 @@ SNAIL.drawMap = function(offX,offY) {
 // *** Game Progress Events *** //
 SNAIL.hitLetter = function(letter){
 
-	if(typeof letter != 'string' || letter.length == 0 || letter.charCodeAt(0) < 65 || letter.charCodeAt(0) > 90){
+	if(typeof letter != 'string' || letter.length != 1 || letter.charCodeAt(0) < 65 || letter.charCodeAt(0) > 90){
+		return;
+	}
+
+	if(letter == SNAIL.currentText[SNAIL.currentText.length-1]){
 		return;
 	}
 	
