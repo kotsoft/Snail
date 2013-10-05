@@ -20,8 +20,8 @@ SNAIL.matches = [];
 
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
-  SNAIL.canvas.width = SNAIL.canvasRenderWidth;
-  SNAIL.canvas.height = SNAIL.canvasRenderHeight;
+  // SNAIL.canvas.width = SNAIL.canvasRenderWidth;
+  // SNAIL.canvas.height = SNAIL.canvasRenderHeight;
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
 
 	SNAIL.canvas.width = 800;
@@ -35,8 +35,14 @@ SNAIL.startGame = function(){
 
 SNAIL.initBlocks = function(){
 	for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
-		SNAIL.staticBlocks.push(['A',0,0,0,0,0,0,'B']);
+		// SNAIL.staticBlocks.push(['A',0,0,0,0,0,0,'B']);
+		if (x % 4 == 0) {
+	      SNAIL.staticBlocks.push(['C','A','E','P',0,0,'B','A']);
+	    } else {
+	      SNAIL.staticBlocks.push(['C','A','E','P',0,0,0,'A']);
+	    }
 	}
+
 };
 
 SNAIL.animloop = function(time){
@@ -57,8 +63,6 @@ SNAIL.main = function(){
 };
 window.onload = SNAIL.main;
 
-//Hackish binding
-// SNAIL.drawMap = drawMap;
 SNAIL.render = function(){
 	SNAIL.drawBackground();
 	SNAIL.drawMap();
@@ -112,7 +116,7 @@ SNAIL.updateModel = function(dt){
 };
 
 SNAIL.drawBackground = function() {
-  SNAIL.ctx.clearRect(0, 0, SNAIL.width, SNAIL.height);
+  SNAIL.ctx.clearRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
 };
 
 SNAIL.drawMap = function() {
@@ -121,7 +125,7 @@ SNAIL.drawMap = function() {
       var block = SNAIL.images[SNAIL.staticBlocks[x][y]];
       if (typeof block == 'object') {
         var imgX = x * SNAIL.blockWidth;
-        var imgY = y * SNAIL.height;
+        var imgY = y * SNAIL.blockHeight;
         SNAIL.ctx.drawImage(block, imgX, imgY);
       }
     }
