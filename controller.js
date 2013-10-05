@@ -15,6 +15,7 @@ SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 
 SNAIL.level = 0;
 SNAIL.currentText = "";
+SNAIL.matches = [];
 
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
@@ -27,8 +28,8 @@ SNAIL.startGame = function(){
 };
 
 SNAIL.initBlocks = function(){
-	for (var x = 0; x < 100; x++) {
-		SNAIL.staticBlocks.push([0,0,'A',0,0,0,0,1]);
+	for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
+		SNAIL.staticBlocks.push(['A',0,0,0,0,0,0,'B']);
 	}
 };
 
@@ -70,11 +71,11 @@ SNAIL.updateModel = function(dt){
 
 // *** Game Progress Events *** //
 SNAIL.hitLetter = function(letter){
-
 	console.log("Hit letter: " + letter);
 
 	var words = SNAIL.levelWords[SNAIL.level];
 	var isMatch = false;
+	var matches = [];
 	for(var i = 0; i < words.length; i++){
 		var word = words[i];
 		var newText = SNAIL.currentText + letter;
@@ -90,6 +91,7 @@ SNAIL.hitLetter = function(letter){
 
 		if(matchesWord){
 			isMatch = true;
+			matches.push(i);
 		}
 
 		if(!matchesWord || newText.length < word.length){
@@ -108,7 +110,7 @@ SNAIL.hitLetter = function(letter){
 
 			SNAIL.currentText = "";
 		}else{
-			console.log("matching... keep going!");
+			console.log(matches,"matching... keep going!");
 		}
 	}
 
@@ -116,6 +118,7 @@ SNAIL.hitLetter = function(letter){
 		SNAIL.currentText += letter;
 	}
 
+	SNAIL.matches = matches;
 };
 
 SNAIL.staticCollision = function(x, y) {
