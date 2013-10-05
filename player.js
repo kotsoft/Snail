@@ -33,9 +33,9 @@ SNAIL.player = {
       this.y = newPos[1];
     }
   },
-  draw: function() {
+  draw: function(x,y) {
     var ctx = SNAIL.ctx;
     var img = SNAIL.images.SNAIL_PNK;
-    ctx.drawImage(img, this.x, this.y);
+    ctx.drawImage(img, x,y);
   },
 }
