@@ -314,6 +314,7 @@ SNAIL.hitLetter = function(letter){
 		console.log("failure :(");
 		SNAIL.player.state = "sad";
 		SNAIL.currentText = "";
+		SNAIL.lastLetter = "";
 	}else{
 		if(matchedWordCompletely){
 			console.log("completly!");
@@ -322,6 +323,7 @@ SNAIL.hitLetter = function(letter){
 			SNAIL.level++;
 			matches = [];
 			SNAIL.currentText = "";
+			// SNAIL.lastLetter = "";
 		}else{
 			SNAIL.currentText = SNAIL.currentText+letter;
 			SNAIL.player.state = "happy";
