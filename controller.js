@@ -73,7 +73,48 @@ SNAIL.hitLetter = function(letter){
 
 	console.log("Hit letter: " + letter);
 
-	//if(S)
+	var words = SNAIL.levelWords[SNAIL.level];
+	var isMatch = false;
+	for(var i = 0; i < words.length; i++){
+		var word = words[i];
+		var newText = SNAIL.currentText + letter;
+		
+		// console.log(word);
+		var matchesWord = true;
+		var matchedWordCompletely = true;
+		for(var j = 0; j < word.length && j < newText.length; j++){
+			if(newText[j] != word[j]){
+				matchesWord = false;
+			}
+		}
+
+		if(matchesWord){
+			isMatch = true;
+		}
+
+		if(!matchesWord || newText.length < word.length){
+			matchedWordCompletely = false;
+		}else{
+			break;
+		}
+	}
+	
+	if(!isMatch){
+		console.log("failure :(");
+		SNAIL.currentText = "";
+	}else{
+		if(matchedWordCompletely){
+			console.log("completly!");
+
+			SNAIL.currentText = "";
+		}else{
+			console.log("matching... keep going!");
+		}
+	}
+
+	if(matchesWord){
+		SNAIL.currentText += letter;
+	}
 
 };
 
