@@ -5,15 +5,22 @@ SNAIL.player = {
   init: function(x, y) {
     this.x = this.xprev = x;
     this.y = this.yprev = y;
-    console.log(SNAIL.images);
+
+    // Make canvas for both the shell and body so that they
+    // can be individually transformed.
     var shellImg = SNAIL.images['snail-body-shl-prpl'];
+    this.shellCanvas = document.createElement('canvas');
+    this.shellCanvas.width = SNAIL.blockWidth;
+    this.shellCanvas.height = SNAIL.blockHeight;
+    this.shellCtx = this.shellCanvas.getContext('2d');
+    this.shellCtx.drawImage(shellImg, 0, 0);
+
     var bodyImg = SNAIL.images['snail-body-blu'];
-    this.canvas = document.createElement('canvas');
-    this.canvas.width = SNAIL.blockWidth;
-    this.canvas.height = SNAIL.blockHeight;
-    var ctx = this.canvas.getContext('2d');
-    ctx.drawImage(shellImg, 0, 0);
-    ctx.drawImage(bodyImg, 0, 0);
+    this.bodyCanvas = document.createElement('canvas');
+    this.bodyCanvas.width = SNAIL.blockWidth;
+    this.bodyCanvas.height = SNAIL.blockHeight;
+    this.bodyCtx = this.bodyCanvas.getContext('2d');
+    this.bodyCtx.drawImage(bodyImg, 0, 0);
   },
   update: function(dt){
     var dx = this.x - this.xprev;
@@ -42,8 +49,9 @@ SNAIL.player = {
       this.y = newPos[1];
     }
   },
-  draw: function(x,y) {
+  draw: function(time, x,y) {
     var ctx = SNAIL.ctx;
-    ctx.drawImage(this.canvas, x, y);
+    ctx.drawImage(this.bodyCanvas, x, y);
+    ctx.drawImage(this.shellCanvas, x, y);
   },
 }

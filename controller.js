@@ -52,7 +52,7 @@ SNAIL.initBlocks = function(){
 };
 
 SNAIL.animloop = function(time){
-    SNAIL.render();
+    SNAIL.render(time);
 
     var dt = time - SNAIL.lastFrameTime;
 	SNAIL.updateModel(dt);
@@ -69,10 +69,10 @@ SNAIL.main = function(){
 };
 window.onload = SNAIL.main;
 
-SNAIL.render = function(){
+SNAIL.render = function(time){
 	SNAIL.drawBackground();
 	SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,0);
-	SNAIL.player.draw(SNAIL.canvas.width/2,SNAIL.player.y);
+	SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.player.y);
 };
 
 SNAIL.loadImages = function(callback) {
