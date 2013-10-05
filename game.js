@@ -22,10 +22,10 @@ $(function() {
   canvas.height = height;
   ctx = canvas.getContext('2d');
 
-  var player = Player();
+  var player = SNAIL.player;//Player();
 
   for (var x = 0; x < blocksX; x++) {
-    staticBlocks.push([0,0,0,0,0,0,'B','A']);
+    staticBlocks.push(['C','A','E','P',0,0,'B','A']);
   }
 
   function render() {
@@ -69,7 +69,7 @@ function loadBlockImages(callback) {
 function getImage(key, url) {
   return function(callback) {
     var img = new Image();
-    img.src = 'img/' + url + '.png';
+    img.src = 'images/' + url + '.png';
     img.onload = function() {
       callback(null, key, img);
     };
@@ -85,7 +85,7 @@ function drawMap() {
   for (var x = 0; x < blocksX; x++) {
     for (var y = 0; y < blocksY; y++) {
       var block = blocks[staticBlocks[x][y]];
-      if (block) {
+      if (typeof block == 'object') {
         var imgX = x * blockSize;
         var imgY = y * blockSize;
         ctx.drawImage(block, imgX, imgY);
