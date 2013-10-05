@@ -15,6 +15,7 @@ SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 
 SNAIL.level = 0;
 SNAIL.currentText = "";
+SNAIL.player = new Player();
 
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
@@ -48,7 +49,9 @@ SNAIL.main = function(){
 window.onload = SNAIL.main;
 
 
+//Hackish binding
 SNAIL.drawMap = drawMap;
+SNAIL.staticBlocks = staticBlocks;
 SNAIL.render = function(){
 
 	SNAIL.drawMap();
@@ -57,7 +60,11 @@ SNAIL.render = function(){
 SNAIL.updateModel = function(dt){
 
 	//Random
-	staticBlocks[8*Math.random()|0][8*Math.random()|0] = Math.random() < 0.5 ? 'A' : 'B';
+	//SNAIL.staticBlocks[8*Math.random()|0][8*Math.random()|0] = Math.random() < 0.5 ? 'C' : 'B';
+
+	// SNAIL.player.update(dt);
+	// console.log(dt);
+
 };
 
 

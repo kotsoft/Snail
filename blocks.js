@@ -1,7 +1,7 @@
 var blocks = {
   A: 'A',
   B: 'B',
-  C: 'k',
+  C: 'C',
   D: 'D',
   E: 'E',
   F: 'F',
@@ -24,5 +24,5 @@ var blocks = {
   W: 'W',
   X: 'X',
   Y: 'Y',
-  Z: 'Z',
+  Z: 'Z'
 };
