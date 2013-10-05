@@ -76,15 +76,17 @@ SNAIL.render = function(time){
 	SNAIL.drawBackground(time);
 	
   var offX = -SNAIL.player.x+SNAIL.canvas.width/2;
-  var offY = -SNAIL.player.y+SNAIL.canvas.height/2;
+  var offY = -SNAIL.player.y+SNAIL.canvas.height*2/3;
   if (SNAIL.level >= 1) {
     SNAIL.dog.draw(time, 860+offX, 1296+offY);
   }
   if (SNAIL.level >= 3) {
-    SNAIL.cat.draw(time, 1588+offX, 1296+offY);
+    SNAIL.cat.draw(time, 1588+offX, 1104-48+offY);
   }
-  SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height/2);
+  SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height*2/3);
   SNAIL.drawMap(offX,offY);
+
+  SNAIL.ctx.drawImage(SNAIL.images['word-bar'], SNAIL.canvas.width/2-250, 0);
 
   if (SNAIL.edit) {
     var length = SNAIL.imageFiles.length;
@@ -100,7 +102,7 @@ SNAIL.render = function(time){
   }
 	if(true||SNAIL.dirtyWordsCanvas){
 		SNAIL.dirtyWordsCanvas = false;
-		SNAIL.drawWords(0,0+SNAIL.blockHeight*0.5|0)
+		SNAIL.drawWords(SNAIL.canvas.width/2-(SNAIL.levelWords[SNAIL.level][0].length*SNAIL.blockWidth)/2,0+SNAIL.blockHeight*0.5|0)
 	}
 };
 
