@@ -38,9 +38,6 @@ SNAIL.startGame = function(){
 	// SNAIL.wordsCanvas.width = 800;
 	// SNAIL.wordsCanvas.height = SNAIL.canvasRenderHeight;
 
-	SNAIL.canvas.width = window.innerWidth;
-	SNAIL.canvas.height = window.innerHeight;
-
 	SNAIL.initEvents();
 	SNAIL.initBlocks();
 
@@ -72,15 +69,13 @@ SNAIL.main = function(){
 window.onload = SNAIL.main;
 
 SNAIL.render = function(time){
+  SNAIL.canvas.width = window.innerWidth;
+  SNAIL.canvas.height = window.innerHeight;
+
 	SNAIL.drawBackground(time);
 	
-  if (SNAIL.edit) {
-    SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height/2);
-    SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,-SNAIL.player.y+SNAIL.canvas.height/2);
-  } else {
-    SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.player.y);
-    SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,0);
-  }
+  SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height/2);
+  SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,-SNAIL.player.y+SNAIL.canvas.height/2);
 
   if (SNAIL.edit) {
     var length = SNAIL.imageFiles.length;
