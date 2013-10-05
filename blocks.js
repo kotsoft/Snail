@@ -76,6 +76,8 @@ SNAIL.imageFiles = [
   'rock-blocks',
   'word-bar',
   'word-bubble-dog',
+  'word-bubble-right-dog',
+  'word-bubble-right-dog-cat',
   'word-bubble-cat'
 ];
 SNAIL.images = {};
