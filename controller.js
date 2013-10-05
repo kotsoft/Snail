@@ -80,7 +80,9 @@ SNAIL.render = function(time){
   if (SNAIL.level >= 1) {
     SNAIL.dog.draw(time, 860+offX, 1296+offY);
     if (SNAIL.level == 1) {
-      SNAIL.ctx.drawImage(SNAIL.images['word-bubble-dog'], 860-300+offX, 1296-400+offY);
+      SNAIL.ctx.drawImage(SNAIL.images['word-bubble-right-dog'], 860-300+offX, 1296-400+offY);
+    } else if (SNAIL.level == 2) {
+      SNAIL.ctx.drawImage(SNAIL.images['word-bubble-right-dog-cat'], 860-300+offX, 1296-400+offY);
     }
   }
   if (SNAIL.level >= 3) {
