@@ -49,19 +49,12 @@ SNAIL.startGame = function(){
 SNAIL.initBlocks = function(){
 
 	for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
-		// SNAIL.staticBlocks.push(['A',0,0,0,0,0,0,'B']);
-		if (x % 4 == 0) {
-	      SNAIL.staticBlocks.push(['C','A','E','P',0,0,'B','A']);
-	    } else {
-	    	if(Math.random() < 0.2){
-		      SNAIL.staticBlocks.push(['C','A','E','P',0,0,0,'A']);
-
-		  }else{
-		      SNAIL.staticBlocks.push(['C','A','E',0,0,0,0,'A']);
-		  }
-	    }
+		var column = SNAIL.staticBlocks[x] = []
+    for (var y = 0; y < SNAIL.numBlocksHeight-1; y++) {
+      column.push(0);
+    }
+    column.push('grass-block1')
 	}
-
 };
 
 SNAIL.animloop = function(time){
@@ -86,11 +79,11 @@ SNAIL.render = function(time){
 	SNAIL.drawBackground();
 	
   if (SNAIL.edit) {
-    SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,-SNAIL.player.y+SNAIL.canvas.height/2);
     SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height/2);
+    SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,-SNAIL.player.y+SNAIL.canvas.height/2);
   } else {
-    SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,0);
     SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.player.y);
+    SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,0);
   }
 
   if (SNAIL.edit) {
@@ -304,7 +297,7 @@ SNAIL.staticCollision = function(x, y, dx, dy) {
 
   for (var i = cellX-1; i < cellX+2; i++) {
     for (var j = cellY-1; j < cellY+2; j++) {
-      if (i > -1 && j > -1 && i < SNAIL.numBlocksWidth && j < SNAIL.numBlocksHeight && SNAIL.staticBlocks[i][j]) {
+      if (i > -1 && j > -1 && i < SNAIL.numBlocksWidth && j < SNAIL.numBlocksHeight && SNAIL.staticBlocks[i][j] && SNAIL.staticBlocks[i][j].indexOf('grass-top') == -1) {
         var vx = x-i*SNAIL.blockWidth;
         var vy = y-j*SNAIL.blockHeight;
         if (vx > -SNAIL.blockWidth && vx < SNAIL.blockWidth && vy > -SNAIL.blockHeight && vy < SNAIL.blockHeight) {
