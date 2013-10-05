@@ -4,6 +4,15 @@ SNAIL.canvasID = "#gameCanvas";
 SNAIL.staticBlocks = [];
 SNAIL.lastFrameTime = 0;
 
+SNAIL.blockWidth  = 48;
+SNAIL.blockHeight = 48;
+
+SNAIL.numBlocksWidth  = 100;
+SNAIL.numBlocksHeight = 50;
+
+SNAIL.canvasRenderWidth  = SNAIL.numBlocksWidth  * SNAIL.blockWidth; 
+SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
+
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
@@ -33,6 +42,8 @@ SNAIL.main = function(){
 	requestNextAnimationFrame(SNAIL.animloop);
 };
 
+window.onload = SNAIL.main;
+
 SNAIL.render = function(){
 
 };
@@ -41,29 +52,58 @@ SNAIL.updateModel = function(dt){
 
 };
 
-window.onload = SNAIL.main;
-
-
 
 // **** EVENTS **** //
+SNAIL.mouseState = 'up';
+
+SNAIL.movePlayer = function(direction){
+	console.log("Move: " + direction);
+};
+
+SNAIL.mouseup = function(x,y){
+	SNAIL.mouseState = 'up';
+};
+
+SNAIL.mousedown = function(x,y){
+	SNAIL.mouseState = 'down';
+};
+
+SNAIL.mousemove = function(x,y){
+
+};
+
 SNAIL.initEvents = function(){
 	$(document).mouseup(function (e) {
 		var offset = $(SNAIL.canvasID).offset();
 		var x = e.pageX - offset.left;
 		var y = e.pageY - offset.top;
+		SNAIL.mouseup(x,y);
 	});
-
 
 	$(document).mousedown(function (e) {
 		var offset = $(SNAIL.canvasID).offset();
 		var x = e.pageX - offset.left;
 		var y = e.pageY - offset.top;
+		SNAIL.mousedown(x,y);
 	});
 
 	$(document).mousemove(function (e) {
 		var offset = $(SNAIL.canvasID).offset();
 		var x = e.pageX - offset.left;
 		var y = e.pageY - offset.top;
+		SNAIL.mousemove(x,y);
+	});
+
+	$(document).keydown(function (e) {
+		if(e.which == 37){
+			SNAIL.movePlayer('left');
+		}else if(e.which == 39){
+			SNAIL.movePlayer('right');
+		}else if(e.which == 38){
+			SNAIL.movePlayer('up');
+		}else if(e.which == 40){
+			SNAIL.movePlayer('down');
+		}
 	});
 };
 
