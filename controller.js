@@ -52,9 +52,9 @@ window.onload = SNAIL.main;
 //Hackish binding
 // SNAIL.drawMap = drawMap;
 SNAIL.render = function(){
-
+	SNAIL.drawBackground();
 	SNAIL.drawMap();
-  SNAIL.player.draw();
+	SNAIL.player.draw();
 };
 
 SNAIL.updateModel = function(dt){
