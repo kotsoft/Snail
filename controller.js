@@ -44,18 +44,11 @@ SNAIL.startGame = function(){
 	SNAIL.initEvents();
 	SNAIL.initBlocks();
 
-	SNAIL.player.init(0,48*4);
+	SNAIL.player.init(48,1344);
 };
 
 SNAIL.initBlocks = function(){
-
-	for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
-		var column = SNAIL.staticBlocks[x] = []
-    for (var y = 0; y < SNAIL.numBlocksHeight-1; y++) {
-      column.push(0);
-    }
-    column.push('grass-block1')
-	}
+  SNAIL.staticBlocks = SNAIL.levelData;
 };
 
 SNAIL.animloop = function(time){
