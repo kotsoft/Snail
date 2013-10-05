@@ -18,10 +18,10 @@ SNAIL.player = {
   update: function(dt){
     var dx = this.x - this.xprev;
     if (this.moveLeft) {
-      dx -= .5;
+      dx -= .8;
     }
     if (this.moveRight) {
-      dx += .5;
+      dx += .8;
     }
     if (dx > 10) {
       dx = 10;
@@ -29,21 +29,21 @@ SNAIL.player = {
       dx = -10;
     }
     dx *= .9;
-    var dy = this.y - this.yprev + 0.5;
+    var dy = this.y - this.yprev + SNAIL.gravity;
     this.xprev = this.x;
     this.yprev = this.y;
     this.x += dx;
     this.y += dy;
-    var newPos = SNAIL.staticCollision(this.x, this.y);
+    var newPos = SNAIL.staticCollision(this.x, this.y, dx, dy);
     this.x = newPos[0];
     if (this.jump && newPos[1] < this.y) {
-      this.y = this.yprev - 10;
+      this.y = this.yprev - 15;
     } else {
       this.y = newPos[1];
     }
   },
-  draw: function() {
+  draw: function(x,y) {
     var ctx = SNAIL.ctx;
-    ctx.drawImage(this.canvas, this.x, this.y);
+    ctx.drawImage(this.canvas, x, y);
   },
 }
