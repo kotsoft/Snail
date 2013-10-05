@@ -23,7 +23,7 @@ SNAIL.gravity = .8;
 SNAIL.bgColor = '#fff';
 
 // Variables for editor
-SNAIL.edit = true;
+SNAIL.edit = false;
 SNAIL.currentBlock = 0;
 
 SNAIL.startGame = function(){
@@ -42,8 +42,9 @@ SNAIL.startGame = function(){
 	SNAIL.initBlocks();
 
 	SNAIL.player.init(48,1344);
-  SNAIL.dog = new Animal('dog');
-  SNAIL.cat = new Animal('cat');
+  
+	SNAIL.dog = new Animal('dog');
+	SNAIL.cat = new Animal('cat');
 };
 
 SNAIL.initBlocks = function(){
@@ -74,8 +75,16 @@ SNAIL.render = function(time){
 
 	SNAIL.drawBackground(time);
 	
+  var offX = -SNAIL.player.x+SNAIL.canvas.width/2;
+  var offY = -SNAIL.player.y+SNAIL.canvas.height/2;
+  if (SNAIL.level >= 1) {
+    SNAIL.dog.draw(time, 860+offX, 1296+offY);
+  }
+  if (SNAIL.level >= 3) {
+    SNAIL.cat.draw(time, 1588+offX, 1296+offY);
+  }
   SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height/2);
-  SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,-SNAIL.player.y+SNAIL.canvas.height/2);
+  SNAIL.drawMap(offX,offY);
 
   if (SNAIL.edit) {
     var length = SNAIL.imageFiles.length;
@@ -258,16 +267,17 @@ SNAIL.drawMap = function(offX,offY) {
 };
 
 // *** Game Progress Events *** //
+SNAIL.lastLetter = "";
 SNAIL.hitLetter = function(letter){
 
 	if(typeof letter != 'string' || letter.length != 1 || letter.charCodeAt(0) < 65 || letter.charCodeAt(0) > 90){
 		return;
 	}
 
-	if(letter == SNAIL.currentText[SNAIL.currentText.length-1]){
+	if(letter == SNAIL.lastLetter){
 		return;
 	}
-	
+	SNAIL.lastLetter = letter;
 	console.log("Hit letter: " + letter);
 
 	var words = SNAIL.levelWords[SNAIL.level];
@@ -302,6 +312,7 @@ SNAIL.hitLetter = function(letter){
 		console.log("failure :(");
 		SNAIL.player.state = "sad";
 		SNAIL.currentText = "";
+		SNAIL.lastLetter = "";
 	}else{
 		if(matchedWordCompletely){
 			console.log("completly!");
@@ -310,6 +321,7 @@ SNAIL.hitLetter = function(letter){
 			SNAIL.level++;
 			matches = [];
 			SNAIL.currentText = "";
+			// SNAIL.lastLetter = "";
 		}else{
 			SNAIL.currentText = SNAIL.currentText+letter;
 			SNAIL.player.state = "happy";
