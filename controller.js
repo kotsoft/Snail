@@ -13,6 +13,9 @@ SNAIL.numBlocksHeight = 50;
 SNAIL.canvasRenderWidth  = SNAIL.numBlocksWidth  * SNAIL.blockWidth; 
 SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 
+SNAIL.level = 0;
+SNAIL.currentText = "";
+
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
@@ -24,7 +27,7 @@ SNAIL.startGame = function(){
 SNAIL.initBlocks = function(){
 	for (var x = 0; x < 100; x++) {
 		SNAIL.staticBlocks.push([0,0,0,0,0,0,0,1]);
-	}	
+	}
 };
 
 SNAIL.animloop = function(time){
@@ -51,6 +54,17 @@ SNAIL.render = function(){
 SNAIL.updateModel = function(dt){
 
 };
+
+
+// *** Game Progress Events *** //
+SNAIL.hitLetter = function(letter){
+
+	console.log("Hit letter: " + letter);
+
+	//if(S)
+
+};
+
 
 
 // **** EVENTS **** //
