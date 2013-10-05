@@ -1,0 +1,7 @@
+canvas {
+  background-color: #d9e7ff;
+  background-image: url(images/zm-cloud-bkgd.gif), url(images/agp-cloud-bkgd.gif);
+  background-size: 25%, 25%;
+  background-position: 25% 0, 0 75%;
+  background-repeat: repeat-x, repeat-x;
+}
