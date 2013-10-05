@@ -16,6 +16,7 @@ SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 
 SNAIL.level = 0;
 SNAIL.currentText = "";
+SNAIL.matches = [];
 
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
@@ -30,8 +31,8 @@ SNAIL.startGame = function(){
 };
 
 SNAIL.initBlocks = function(){
-	for (var x = 0; x < 100; x++) {
-		SNAIL.staticBlocks.push([0,0,'A',0,0,0,0,1]);
+	for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
+		SNAIL.staticBlocks.push(['A',0,0,0,0,0,0,'B']);
 	}
 };
 
@@ -57,9 +58,9 @@ window.onload = SNAIL.main;
 //Hackish binding
 // SNAIL.drawMap = drawMap;
 SNAIL.render = function(){
-  console.log('render');
-  SNAIL.drawMap();
-  SNAIL.player.draw();
+	SNAIL.drawBackground();
+	SNAIL.drawMap();
+	SNAIL.player.draw();
 };
 
 SNAIL.loadImages = function(callback) {
@@ -103,7 +104,7 @@ SNAIL.updateModel = function(dt){
 	//Random
 	//SNAIL.staticBlocks[8*Math.random()|0][8*Math.random()|0] = Math.random() < 0.5 ? 'C' : 'B';
 
-	SNAIL.player.update(dt);
+	SNAIL.player.update(1);
 	// console.log(dt);
 
 };
@@ -127,11 +128,11 @@ SNAIL.drawMap = function() {
 
 // *** Game Progress Events *** //
 SNAIL.hitLetter = function(letter){
-
 	console.log("Hit letter: " + letter);
 
 	var words = SNAIL.levelWords[SNAIL.level];
 	var isMatch = false;
+	var matches = [];
 	for(var i = 0; i < words.length; i++){
 		var word = words[i];
 		var newText = SNAIL.currentText + letter;
@@ -147,6 +148,7 @@ SNAIL.hitLetter = function(letter){
 
 		if(matchesWord){
 			isMatch = true;
+			matches.push(i);
 		}
 
 		if(!matchesWord || newText.length < word.length){
@@ -165,7 +167,7 @@ SNAIL.hitLetter = function(letter){
 
 			SNAIL.currentText = "";
 		}else{
-			console.log("matching... keep going!");
+			console.log(matches,"matching... keep going!");
 		}
 	}
 
@@ -173,9 +175,10 @@ SNAIL.hitLetter = function(letter){
 		SNAIL.currentText += letter;
 	}
 
+	SNAIL.matches = matches;
 };
 
-SNAIL.staticCollision = function(x, y) {
+SNAIL.staticCollision = function(x, y, dx, dy) {
   var cellX = ~~(x/SNAIL.blockWidth);
   var cellY = ~~(y/SNAIL.blockHeight);
 
@@ -248,15 +251,26 @@ SNAIL.initEvents = function(){
 
 	$(document).keydown(function (e) {
 		if(e.which == 37){
-			SNAIL.movePlayer('left');
+      SNAIL.player.moveLeft = true;
 		}else if(e.which == 39){
-			SNAIL.movePlayer('right');
+      SNAIL.player.moveRight = true;
 		}else if(e.which == 38){
-			SNAIL.movePlayer('up');
+			SNAIL.player.jump = true;
 		}else if(e.which == 40){
 			SNAIL.movePlayer('down');
 		}
 	});
+  $(document).keyup(function (e) {
+    if(e.which == 37){
+      SNAIL.player.moveLeft = false;
+    }else if(e.which == 39){
+      SNAIL.player.moveRight = false;
+    }else if(e.which == 38){
+      SNAIL.player.jump = false;
+    }else if(e.which == 40){
+      SNAIL.movePlayer('down');
+    }
+  });
 };
 
 // Reprinted from Core HTML5 Canvas
