@@ -299,16 +299,19 @@ SNAIL.hitLetter = function(letter){
 
 };
 
-SNAIL.staticCollision = function(x, y, dx, dy) {
+SNAIL.staticCollision = function(x, y, dx, dy, letterEvent) {
   var cellX = ~~(x/SNAIL.blockWidth);
   var cellY = ~~(y/SNAIL.blockHeight);
 
   for (var i = cellX-1; i < cellX+2; i++) {
     for (var j = cellY-1; j < cellY+2; j++) {
-      if (i > -1 && j > -1 && i < SNAIL.numBlocksWidth && j < SNAIL.numBlocksHeight && SNAIL.staticBlocks[i][j] && SNAIL.staticBlocks[i][j].indexOf('grass-top') == -1) {
+      if (i > -1 && j > -1 && i < SNAIL.numBlocksWidth && j < SNAIL.numBlocksHeight && (block = SNAIL.staticBlocks[i][j]) && block.indexOf('grass-top') == -1) {
         var vx = x-i*SNAIL.blockWidth;
         var vy = y-j*SNAIL.blockHeight;
         if (vx > -SNAIL.blockWidth && vx < SNAIL.blockWidth && vy > -SNAIL.blockHeight && vy < SNAIL.blockHeight) {
+          if (letterEvent && block.length == 1) {
+            SNAIL.hitLetter(block);
+          }
           if (Math.abs(vx) > Math.abs(vy-dy-SNAIL.gravity)) {
             if (vx < 0) {
               x -= SNAIL.blockWidth+vx;
