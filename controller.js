@@ -17,6 +17,7 @@ SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 SNAIL.level = 0;
 SNAIL.currentText = "";
 SNAIL.matches = [];
+SNAIL.gravity = .8;
 
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
@@ -187,7 +188,7 @@ SNAIL.staticCollision = function(x, y, dx, dy) {
         var vx = x-i*SNAIL.blockWidth;
         var vy = y-j*SNAIL.blockHeight;
         if (vx > -SNAIL.blockWidth && vx < SNAIL.blockWidth && vy > -SNAIL.blockHeight && vy < SNAIL.blockHeight) {
-          if (Math.abs(vx) > Math.abs(vy)) {
+          if (Math.abs(vx) > Math.abs(vy-dy-SNAIL.gravity)) {
             if (vx < 0) {
               x -= SNAIL.blockWidth+vx;
             } else {
