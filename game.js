@@ -34,10 +34,10 @@ $(function() {
 
   loadBlockImages(function(err) {
     if (err) return console.error(err);
-    (function animloop(){
-      requestAnimFrame(animloop);
-      render();
-    })();
+    // (function animloop(){
+    //   requestAnimFrame(animloop);
+    //   render();
+    // })();
   });
 })
 
