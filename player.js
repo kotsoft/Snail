@@ -5,6 +5,15 @@ SNAIL.player = {
   init: function(x, y) {
     this.x = this.xprev = x;
     this.y = this.yprev = y;
+    console.log(SNAIL.images);
+    var shellImg = SNAIL.images['snail-body-shl-prpl'];
+    var bodyImg = SNAIL.images['snail-body-blu'];
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = SNAIL.blockWidth;
+    this.canvas.height = SNAIL.blockHeight;
+    var ctx = this.canvas.getContext('2d');
+    ctx.drawImage(shellImg, 0, 0);
+    ctx.drawImage(bodyImg, 0, 0);
   },
   update: function(dt){
     var dx = this.x - this.xprev;
@@ -35,7 +44,6 @@ SNAIL.player = {
   },
   draw: function() {
     var ctx = SNAIL.ctx;
-    var img = SNAIL.images.SNAIL_PNK;
-    ctx.drawImage(img, this.x, this.y);
+    ctx.drawImage(this.canvas, this.x, this.y);
   },
 }
