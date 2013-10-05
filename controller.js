@@ -9,7 +9,7 @@ SNAIL.blockWidth  = 48;
 SNAIL.blockHeight = 48;
 
 SNAIL.numBlocksWidth  = 100;
-SNAIL.numBlocksHeight = 8;
+SNAIL.numBlocksHeight = 30;
 
 // Width only needs to be as big as the view.
 SNAIL.canvasRenderWidth  = SNAIL.numBlocksHeight  * SNAIL.blockWidth;
@@ -25,16 +25,16 @@ SNAIL.startGame = function(){
 	SNAIL.loadImageData();
 
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
-	SNAIL.wordsCanvas = $(SNAIL.wordsCanvasID)[0];
+	// SNAIL.wordsCanvas = $(SNAIL.wordsCanvasID)[0];
   // SNAIL.canvas.width = SNAIL.canvasRenderWidth;
   // SNAIL.canvas.height = SNAIL.canvasRenderHeight;
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
-	SNAIL.wordsctx = SNAIL.wordsCanvas.getContext('2d');
-	SNAIL.wordsCanvas.width = 800;
-	SNAIL.wordsCanvas.height = SNAIL.canvasRenderHeight;
+	// SNAIL.wordsctx = SNAIL.wordsCanvas.getContext('2d');
+	// SNAIL.wordsCanvas.width = 800;
+	// SNAIL.wordsCanvas.height = SNAIL.canvasRenderHeight;
 
-	SNAIL.canvas.width = 800;
-	SNAIL.canvas.height = SNAIL.canvasRenderHeight;
+	SNAIL.canvas.width = window.innerWidth;
+	SNAIL.canvas.height = window.innerHeight;
 
 	SNAIL.initEvents();
 	SNAIL.initBlocks();
@@ -43,6 +43,7 @@ SNAIL.startGame = function(){
 };
 
 SNAIL.initBlocks = function(){
+
 	for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
 		// SNAIL.staticBlocks.push(['A',0,0,0,0,0,0,'B']);
 		if (x % 4 == 0) {
@@ -60,7 +61,7 @@ SNAIL.initBlocks = function(){
 };
 
 SNAIL.animloop = function(time){
-    SNAIL.render();
+    SNAIL.render(time);
 
     var dt = time - SNAIL.lastFrameTime;
 	SNAIL.updateModel(dt);
@@ -77,20 +78,20 @@ SNAIL.main = function(){
 };
 window.onload = SNAIL.main;
 
-SNAIL.render = function(){
+SNAIL.render = function(time){
 	SNAIL.drawBackground();
 	SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,0);
-	SNAIL.player.draw(SNAIL.canvas.width/2,SNAIL.player.y);
-	if(SNAIL.dirtyWordsCanvas){
+
+	SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.player.y);
+	if(true||SNAIL.dirtyWordsCanvas){
 		SNAIL.dirtyWordsCanvas = false;
-		SNAIL.drawWords();
+		SNAIL.drawWords(0,0+SNAIL.blockHeight*0.5|0)
 	}
 };
 
-SNAIL.drawWords = function(){
+SNAIL.drawWords = function(offX,offY){
 	var currentText = SNAIL.currentText;
-	SNAIL.wordsctx.clearRect(0, 0, SNAIL.wordsCanvas.width, SNAIL.wordsCanvas.height);
-	
+	// SNAIL.wordsctx.clearRect(0, 0, SNAIL.wordsCanvas.width, SNAIL.wordsCanvas.height);
 
 	if(SNAIL.matches.length == 0){
 		for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
@@ -98,8 +99,7 @@ SNAIL.drawWords = function(){
 		}
 	}
 	var numWords = SNAIL.matches.length;//SNAIL.levelWords[SNAIL.level].length;
-	console.log(SNAIL.matches,SNAIL.currentText)
-
+	// console.log(SNAIL.matches,SNAIL.currentText)
 
 	for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
 		var word = SNAIL.levelWords[SNAIL.level][i];
@@ -108,7 +108,7 @@ SNAIL.drawWords = function(){
 			if (typeof block == 'object') {
 				var imgX = j * SNAIL.blockWidth;
 				var imgY = i * SNAIL.blockHeight;
-				SNAIL.wordsctx.drawImage(block, imgX, imgY);
+				SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
 			}
 		}
 	}
@@ -120,7 +120,7 @@ SNAIL.drawWords = function(){
 			if (typeof block == 'object') {
 				var imgX = j * SNAIL.blockWidth;
 				var imgY = i * SNAIL.blockHeight;
-				SNAIL.wordsctx.drawImage(block, imgX, imgY);
+				SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
 			}
 		}
 	}
@@ -145,8 +145,8 @@ SNAIL.loadImageData = function(){
 
 SNAIL.loadImages = function(callback) {
   var funcs = [];
-  for (var key in SNAIL.images) {
-    funcs.push(getImage(key, SNAIL.images[key]));
+  for (var i = 0, len = SNAIL.imageFiles.length; i < len; i++) {
+    funcs.push(getImage(SNAIL.imageFiles[i]));
   }
 
   (function next() {
@@ -166,10 +166,10 @@ SNAIL.loadImages = function(callback) {
   })();
 };
 
-function getImage(key, url) {
+function getImage(key) {
   return function(callback) {
     var img = new Image();
-    img.src = 'images/' + url + '.png';
+    img.src = 'images/' + key + '.png';
     img.onload = function() {
       callback(null, key, img);
     };
