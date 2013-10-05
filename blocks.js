@@ -74,6 +74,8 @@ SNAIL.imageFiles = [
   'snail-body-shl-pnk',
   'snail-body-shl-prpl',
   'rock-blocks',
-  'word-bar'
+  'word-bar',
+  'word-bubble-dog',
+  'word-bubble-cat'
 ];
 SNAIL.images = {};
