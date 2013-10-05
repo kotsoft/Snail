@@ -60,12 +60,12 @@ SNAIL.render = function(){
 
 SNAIL.updateModel = function(dt){
 
-	SNAIL.player.update(dt/1000*60);
+	//SNAIL.player.update(dt/1000*60);
 
 	//Random
 	//SNAIL.staticBlocks[8*Math.random()|0][8*Math.random()|0] = Math.random() < 0.5 ? 'C' : 'B';
 
-	// SNAIL.player.update(dt);
+	SNAIL.player.update(dt);
 	// console.log(dt);
 
 };
@@ -81,26 +81,26 @@ SNAIL.hitLetter = function(letter){
 };
 
 SNAIL.staticCollision = function(x, y) {
-  var cellX = ~~(x/SNAIL.blockSize);
-  var cellY = ~~(y/SNAIL.blockSize);
+  var cellX = ~~(x/SNAIL.blockWidth);
+  var cellY = ~~(y/SNAIL.blockHeight);
 
   for (var i = cellX-1; i < cellX+2; i++) {
     for (var j = cellY-1; j < cellY+2; j++) {
       if (i > -1 && j > -1 && i < SNAIL.numBlocksWidth && j < SNAIL.numBlocksHeight && SNAIL.staticBlocks[i][j]) {
-        var vx = x-i*SNAIL.blockSize;
-        var vy = y-j*SNAIL.blockSize;
-        if (vx > -SNAIL.blockSize && vx < SNAIL.blockSize && vy > -SNAIL.blockSize && vy < SNAIL.blockSize) {
+        var vx = x-i*SNAIL.blockWidth;
+        var vy = y-j*SNAIL.blockHeight;
+        if (vx > -SNAIL.blockWidth && vx < SNAIL.blockWidth && vy > -SNAIL.blockHeight && vy < SNAIL.blockHeight) {
           if (Math.abs(vx) > Math.abs(vy)) {
             if (vx < 0) {
-              x -= SNAIL.blockSize+vx;
+              x -= SNAIL.blockWidth+vx;
             } else {
-              x += SNAIL.blockSize-vx;
+              x += SNAIL.blockWidth-vx;
             }
           } else {
             if (vy < 0) {
-              y -= SNAIL.blockSize+vy;
+              y -= SNAIL.blockHeight+vy;
             } else {
-              y += SNAIL.blockSize-vy;
+              y += SNAIL.blockHeight-vy;
             }
           }
         }
