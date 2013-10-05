@@ -128,11 +128,12 @@ SNAIL.drawWords = function(offX,offY){
 				if(SNAIL.matches.indexOf(i) >= 0 && word[j] == currentText[j]){
 					
 					//Draw set block here
-					SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
-
+					var block = SNAIL.images[word[j].toUpperCase()+'P'];
+					if (typeof block == 'object') {
+						SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
+					}
 				}else{
 					SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
-
 					if(SNAIL.matches.indexOf(i) < 0){
 						SNAIL.ctx.fillStyle = 'rgba(255,0,0,0.4)';
 					}else{
@@ -240,6 +241,11 @@ SNAIL.drawMap = function(offX,offY) {
 
 // *** Game Progress Events *** //
 SNAIL.hitLetter = function(letter){
+
+	if(typeof letter != 'string' || letter.length == 0 || letter.charCodeAt(0) < 65 || letter.charCodeAt(0) > 90){
+		return;
+	}
+	
 	console.log("Hit letter: " + letter);
 
 	var words = SNAIL.levelWords[SNAIL.level];
