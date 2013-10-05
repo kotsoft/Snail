@@ -232,9 +232,7 @@ SNAIL.updateModel = function(dt, time){
 
 SNAIL.drawBackground = function(time) {
   var ctx = SNAIL.ctx;
-  ctx.fillStyle = SNAIL.bgColor;
-  ctx.fillRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
-  SNAIL.drawRectBackground(time);
+  ctx.clearRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
 };
 
 SNAIL.drawRectBackground = function(time) {
