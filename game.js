@@ -25,9 +25,9 @@ $(function() {
 
   for (var x = 0; x < blocksX; x++) {
     if (x % 4 == 0) {
-      staticBlocks.push(['C','A','E','P',0,0,'B','A']);
+      SNAIL.staticBlocks.push(['C','A','E','P',0,0,'B','A']);
     } else {
-      staticBlocks.push(['C','A','E','P',0,0,0,'A']);
+      SNAIL.staticBlocks.push(['C','A','E','P',0,0,0,'A']);
     }
   }
 
