@@ -45,6 +45,8 @@ SNAIL.startGame = function(){
 	SNAIL.initBlocks();
 
 	SNAIL.player.init(0,48*4);
+  SNAIL.dog = new Animal('dog');
+  SNAIL.cat = new Animal('cat');
 };
 
 SNAIL.initBlocks = function(){
