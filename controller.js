@@ -16,7 +16,7 @@ SNAIL.canvasRenderWidth  = SNAIL.numBlocksHeight  * SNAIL.blockWidth;
 SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 
 SNAIL.dirtyWordsCanvas = true;
-SNAIL.level = 3;
+SNAIL.level = 0;
 SNAIL.currentText = "";
 SNAIL.matches = [];
 SNAIL.gravity = .8;
@@ -80,13 +80,13 @@ SNAIL.render = function(time){
   if (SNAIL.level >= 1) {
     SNAIL.dog.draw(time, 860+offX, 1296+offY);
     if (SNAIL.level == 1) {
-      SNAIL.ctx.drawImage(SNAIL.images['word-bubble-dog'], 860-200+offX, 1296-400+offY);
+      SNAIL.ctx.drawImage(SNAIL.images['word-bubble-dog'], 860-300+offX, 1296-400+offY);
     }
   }
   if (SNAIL.level >= 3) {
     SNAIL.cat.draw(time, 1588+offX, 1104-48+offY);
     if (SNAIL.level == 3) {
-      SNAIL.ctx.drawImage(SNAIL.images['word-bubble-cat'], 1588-150+offX, 1104-48-400+offY);
+      SNAIL.ctx.drawImage(SNAIL.images['word-bubble-cat'], 1588-100+offX, 1104-350+offY);
     }
   }
   SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height*2/3);
@@ -232,7 +232,9 @@ SNAIL.updateModel = function(dt, time){
 
 SNAIL.drawBackground = function(time) {
   var ctx = SNAIL.ctx;
-  ctx.clearRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
+  ctx.fillStyle = SNAIL.bgColor;
+  ctx.fillRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
+  SNAIL.drawRectBackground(time);
 };
 
 SNAIL.drawRectBackground = function(time) {
