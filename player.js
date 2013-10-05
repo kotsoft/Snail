@@ -5,7 +5,7 @@ SNAIL.player = {
   },
   update: function(dt){
     var dx = this.x - this.xprev;
-    var dy = this.y - this.yprev + .1 * dt*dt;
+    var dy = this.y - this.yprev + .1;
     this.xprev = this.x;
     this.yprev = this.y;
     this.x += dx;
