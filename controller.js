@@ -78,8 +78,8 @@ SNAIL.render = function(){
 
 SNAIL.loadImages = function(callback) {
   var funcs = [];
-  for (var key in SNAIL.images) {
-    funcs.push(getImage(key, SNAIL.images[key]));
+  for (var i = 0, len = SNAIL.imageFiles.length; i < len; i++) {
+    funcs.push(getImage(SNAIL.imageFiles[i]));
   }
 
   (function next() {
@@ -99,10 +99,10 @@ SNAIL.loadImages = function(callback) {
   })();
 };
 
-function getImage(key, url) {
+function getImage(key) {
   return function(callback) {
     var img = new Image();
-    img.src = 'images/' + url + '.png';
+    img.src = 'images/' + key + '.png';
     img.onload = function() {
       callback(null, key, img);
     };
