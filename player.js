@@ -23,7 +23,7 @@ SNAIL.player = {
     this.bodyCtx.drawImage(bodyImg, 0, 0);
   },
   update: function(dt){
-    var dx = this.x - this.xprev;
+    var dx = this.dx = this.x - this.xprev;
     if (this.moveLeft) {
       dx -= .8;
     }
@@ -36,7 +36,14 @@ SNAIL.player = {
       dx = -10;
     }
     dx *= .9;
-    var dy = this.y - this.yprev + SNAIL.gravity;
+
+    if (dx < 0) {
+      this.faceLeft = true;
+    } else if (dx > 0) {
+      this.faceLeft = false;
+    }
+
+    var dy = this.dy = this.y - this.yprev + SNAIL.gravity;
     this.xprev = this.x;
     this.yprev = this.y;
     this.x += dx;
@@ -49,9 +56,28 @@ SNAIL.player = {
       this.y = newPos[1];
     }
   },
-  draw: function(time, x,y) {
+  draw: function(time, x, y) {
     var ctx = SNAIL.ctx;
-    ctx.drawImage(this.bodyCanvas, x, y);
-    ctx.drawImage(this.shellCanvas, x, y);
+    this.bodyCtx.scale(-1, 1);
+    if (this.faceLeft) {
+      ctx.save();
+      ctx.scale(-1, 1);
+      x = -x - SNAIL.blockWidth;
+      ctx.drawImage(this.bodyCanvas, x, y);
+      this.drawShell(time, x, y);
+      ctx.restore();
+    } else {
+      ctx.drawImage(this.bodyCanvas, x, y);
+      this.drawShell(time, x, y);
+    }
+  },
+  drawShell: function(time, x, y) {
+    time *= -0.01;
+    var ctx = SNAIL.ctx;
+    ctx.save();
+    ctx.translate(x + 22,y + 26);
+    ctx.rotate(time);
+    ctx.drawImage(this.shellCanvas, -20, -28);
+    ctx.restore();
   },
 }
