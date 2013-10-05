@@ -69,6 +69,8 @@ SNAIL.player = {
     var ctx = SNAIL.ctx;
     ctx.save();
     ctx.translate(x + 22,y + 26);
+    var scale = 1.1 + Math.cos(time * 0.1) * 0.1;
+    ctx.scale(scale, scale);
     ctx.rotate(time);
     ctx.drawImage(this.shellImg, -20, -28);
     ctx.restore();
