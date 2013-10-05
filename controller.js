@@ -20,15 +20,15 @@ SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
 
-	SNAIL.player.init(0,48*4);
-
 	SNAIL.initEvents();
 	SNAIL.initBlocks();
+
+	SNAIL.player.init(0,48*4);
 };
 
 SNAIL.initBlocks = function(){
 	for (var x = 0; x < 100; x++) {
-		SNAIL.staticBlocks.push([0,0,0,0,0,0,0,1]);
+		SNAIL.staticBlocks.push([0,0,'A',0,0,0,0,1]);
 	}
 };
 
@@ -46,13 +46,10 @@ SNAIL.main = function(){
 	SNAIL.startGame();
 	requestNextAnimationFrame(SNAIL.animloop);
 };
-
 window.onload = SNAIL.main;
 
-
 //Hackish binding
-SNAIL.drawMap = drawMap;
-SNAIL.staticBlocks = staticBlocks;
+// SNAIL.drawMap = drawMap;
 SNAIL.render = function(){
 
 	SNAIL.drawMap();

@@ -1,7 +1,6 @@
 var blockSize = 48;
-var staticBlocks = [];
-var blocksX = 100;
-var blocksY = 8;
+var blocksX = SNAIL.numBlocksWidth;
+var blocksY = SNAIL.numBlocksHeight;
 var width = blockSize * blocksY;
 var height = blockSize * blocksY;
 
@@ -25,14 +24,14 @@ $(function() {
   var player = SNAIL.player;//Player();
 
   for (var x = 0; x < blocksX; x++) {
-    staticBlocks.push(['C','A','E','P',0,'B','B','A']);
+    SNAIL.staticBlocks.push(['C','A','E','P',0,'B','B','A']);
   }
 
-  function render() {
-    drawBackground();
-    drawMap();
+  // function render() {
+  //   drawBackground();
+  //   drawMap();
     
-  }
+  // }
 
   loadBlockImages(function(err) {
     if (err) return console.error(err);
@@ -77,14 +76,14 @@ function getImage(key, url) {
   };
 }
 
-function drawBackground() {
+SNAIL.drawBackground = function() {
   ctx.clearRect(0, 0, width, height);
 }
 
-function drawMap() {
+SNAIL.drawMap = function() {
   for (var x = 0; x < blocksX; x++) {
     for (var y = 0; y < blocksY; y++) {
-      var block = blocks[staticBlocks[x][y]];
+      var block = blocks[SNAIL.staticBlocks[x][y]];
       if (typeof block == 'object') {
         var imgX = x * blockSize;
         var imgY = y * blockSize;
