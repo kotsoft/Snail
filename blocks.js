@@ -1,4 +1,4 @@
-var blocks = {
+SNAIL.images = {
   A: 'A',
   B: 'B',
   C: 'C',
@@ -24,5 +24,6 @@ var blocks = {
   W: 'W',
   X: 'X',
   Y: 'Y',
-  Z: 'Z'
+  Z: 'Z',
+  SNAIL_PNK: 'snail-body-pnk',
 };

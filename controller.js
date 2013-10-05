@@ -10,7 +10,8 @@ SNAIL.blockHeight = 48;
 SNAIL.numBlocksWidth  = 100;
 SNAIL.numBlocksHeight = 8;
 
-SNAIL.canvasRenderWidth  = SNAIL.numBlocksWidth  * SNAIL.blockWidth; 
+// Width only needs to be as big as the view.
+SNAIL.canvasRenderWidth  = SNAIL.numBlocksHeight  * SNAIL.blockWidth;
 SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 
 SNAIL.level = 0;
@@ -18,6 +19,8 @@ SNAIL.currentText = "";
 
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
+  SNAIL.canvas.width = SNAIL.canvasRenderWidth;
+  SNAIL.canvas.height = SNAIL.canvasRenderHeight;
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
 
 	SNAIL.initEvents();
@@ -43,17 +46,55 @@ SNAIL.animloop = function(time){
 };
 
 SNAIL.main = function(){
-	SNAIL.startGame();
-	requestNextAnimationFrame(SNAIL.animloop);
+  SNAIL.loadImages(function() {
+    SNAIL.startGame();
+    SNAIL.render();
+    //requestNextAnimationFrame(SNAIL.animloop);
+  });
 };
 window.onload = SNAIL.main;
 
 //Hackish binding
 // SNAIL.drawMap = drawMap;
 SNAIL.render = function(){
-
-	SNAIL.drawMap();
+  console.log('render');
+  SNAIL.drawMap();
+  SNAIL.player.draw();
 };
+
+SNAIL.loadImages = function(callback) {
+  var funcs = [];
+  for (var key in SNAIL.images) {
+    funcs.push(getImage(key, SNAIL.images[key]));
+  }
+
+  (function next() {
+    var fn = funcs.shift();
+    fn(function(err, key, img) {
+      if (err) {
+        console.error(err);
+      } else {
+        SNAIL.images[key] = img;
+      }
+      if (funcs.length) {
+        next();
+      } else {
+        callback();
+      }
+    });
+  })();
+};
+
+function getImage(key, url) {
+  return function(callback) {
+    var img = new Image();
+    img.src = 'images/' + url + '.png';
+    img.onload = function() {
+      callback(null, key, img);
+    };
+    img.onerror = callback;
+  };
+}
 
 SNAIL.updateModel = function(dt){
 
@@ -67,6 +108,22 @@ SNAIL.updateModel = function(dt){
 
 };
 
+SNAIL.drawBackground = function() {
+  SNAIL.ctx.clearRect(0, 0, SNAIL.width, SNAIL.height);
+};
+
+SNAIL.drawMap = function() {
+  for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
+    for (var y = 0; y < SNAIL.numBlocksHeight; y++) {
+      var block = SNAIL.images[SNAIL.staticBlocks[x][y]];
+      if (typeof block == 'object') {
+        var imgX = x * SNAIL.blockWidth;
+        var imgY = y * SNAIL.height;
+        SNAIL.ctx.drawImage(block, imgX, imgY);
+      }
+    }
+  }
+};
 
 // *** Game Progress Events *** //
 SNAIL.hitLetter = function(letter){
