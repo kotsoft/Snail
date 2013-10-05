@@ -19,6 +19,10 @@ SNAIL.currentText = "";
 SNAIL.matches = [];
 SNAIL.gravity = .8;
 
+// Variables for editor
+SNAIL.edit = true;
+SNAIL.currentBlock = 0;
+
 SNAIL.startGame = function(){
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
   // SNAIL.canvas.width = SNAIL.canvasRenderWidth;
@@ -72,8 +76,27 @@ window.onload = SNAIL.main;
 
 SNAIL.render = function(time){
 	SNAIL.drawBackground();
-	SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,0);
-	SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.player.y);
+	
+  if (SNAIL.edit) {
+    SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,-SNAIL.player.y+SNAIL.canvas.height/2);
+    SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.canvas.height/2);
+  } else {
+    SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,0);
+    SNAIL.player.draw(time, SNAIL.canvas.width/2,SNAIL.player.y);
+  }
+
+  if (SNAIL.edit) {
+    var length = SNAIL.imageFiles.length;
+    var columns = ~~(SNAIL.canvas.width/SNAIL.blockWidth);
+    var rows = ~~(length/columns)+1;
+
+    for (var i in SNAIL.imageFiles) {
+      var block = SNAIL.images[SNAIL.imageFiles[i]];
+      if (typeof block == 'object') {
+        SNAIL.ctx.drawImage(block, (i%columns)*SNAIL.blockWidth, SNAIL.canvas.height+SNAIL.blockHeight*(~~(i/columns)-rows));
+      }
+    }
+  }
 };
 
 SNAIL.loadImages = function(callback) {
@@ -234,10 +257,41 @@ SNAIL.mouseup = function(x,y){
 
 SNAIL.mousedown = function(x,y){
 	SNAIL.mouseState = 'down';
+
+  if (SNAIL.edit) {
+    var length = SNAIL.imageFiles.length;
+    var columns = ~~(SNAIL.canvas.width/SNAIL.blockWidth);
+    var rows = ~~(length/columns)+1;
+
+    var panel = SNAIL.canvas.height-rows*SNAIL.blockHeight;
+    if (y > panel) {
+      
+
+      var column = ~~(x/SNAIL.blockWidth);
+      var row = ~~((y-panel)/SNAIL.blockHeight);
+
+      SNAIL.currentBlock = SNAIL.imageFiles[column+row*columns] || 0;
+    } else {
+      var cellX = ~~((x+SNAIL.player.x-SNAIL.canvas.width/2)/SNAIL.blockWidth);
+      var cellY = ~~((y+SNAIL.player.y-SNAIL.canvas.height/2)/SNAIL.blockHeight);
+      SNAIL.staticBlocks[cellX][cellY] = SNAIL.currentBlock;
+    }
+  }
 };
 
 SNAIL.mousemove = function(x,y){
+  if (SNAIL.mouseState == 'down' && SNAIL.edit) {
+    var length = SNAIL.imageFiles.length;
+    var columns = ~~(SNAIL.canvas.width/SNAIL.blockWidth);
+    var rows = ~~(length/columns)+1;
 
+    var panel = SNAIL.canvas.height-rows*SNAIL.blockHeight;
+    if (y < panel) {
+      var cellX = ~~((x+SNAIL.player.x-SNAIL.canvas.width/2)/SNAIL.blockWidth);
+      var cellY = ~~((y+SNAIL.player.y-SNAIL.canvas.height/2)/SNAIL.blockHeight);
+      SNAIL.staticBlocks[cellX][cellY] = SNAIL.currentBlock;
+    }
+  }
 };
 
 SNAIL.initEvents = function(){
