@@ -44,20 +44,12 @@ SNAIL.startGame = function(){
 	SNAIL.initEvents();
 	SNAIL.initBlocks();
 
-	SNAIL.player.init(0,48*4);
+	SNAIL.player.init(48,1344);
   SNAIL.dog = new Animal('dog');
   SNAIL.cat = new Animal('cat');
-};
 
 SNAIL.initBlocks = function(){
-
-	for (var x = 0; x < SNAIL.numBlocksWidth; x++) {
-		var column = SNAIL.staticBlocks[x] = []
-    for (var y = 0; y < SNAIL.numBlocksHeight-1; y++) {
-      column.push(0);
-    }
-    column.push('grass-block1')
-	}
+  SNAIL.staticBlocks = SNAIL.levelData;
 };
 
 SNAIL.animloop = function(time){
@@ -116,24 +108,42 @@ SNAIL.drawWords = function(offX,offY){
 			SNAIL.matches[i] = i;
 		}
 	}
+
 	var numWords = SNAIL.matches.length;//SNAIL.levelWords[SNAIL.level].length;
 	// console.log(SNAIL.matches,SNAIL.currentText)
 
+	SNAIL.ctx.save();
 	for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
 		var word = SNAIL.levelWords[SNAIL.level][i];
 		for(var j = 0; j < word.length; j++){
-			var block = SNAIL.images['Z'];
+			var block = SNAIL.images[word[j].toUpperCase()];
 			if (typeof block == 'object') {
 				var imgX = j * SNAIL.blockWidth;
 				var imgY = i * SNAIL.blockHeight;
-				SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
+				if(SNAIL.matches.indexOf(i) >= 0 && word[j] == currentText[j]){
+					
+					//Draw set block here
+					var block = SNAIL.images[word[j].toUpperCase()+'P'];
+					if (typeof block == 'object') {
+						SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
+					}
+				}else{
+					SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
+					if(SNAIL.matches.indexOf(i) < 0){
+						SNAIL.ctx.fillStyle = 'rgba(255,0,0,0.4)';
+					}else{
+						SNAIL.ctx.fillStyle = 'rgba(255,255,255,0.4)';
+					}
+					SNAIL.ctx.fillRect(imgX+offX, imgY+offY, SNAIL.blockWidth, SNAIL.blockHeight);					
+				}
 			}
 		}
 	}
+	SNAIL.ctx.restore();
 
-	for(var i = 0; i < numWords; i++){
-		var word = SNAIL.levelWords[SNAIL.level][SNAIL.matches[i]];
-		for(var j = currentText.length; j < word.length; j++){
+	for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
+		var word = SNAIL.levelWords[SNAIL.level][i];
+		for(var j = currentText.length; j < word.length && SNAIL.matches.indexOf(i) >= 0; j++){
 			var block = SNAIL.images[word[j].toUpperCase()];
 			if (typeof block == 'object') {
 				var imgX = j * SNAIL.blockWidth;
@@ -255,6 +265,15 @@ SNAIL.drawMap = function(offX,offY) {
 
 // *** Game Progress Events *** //
 SNAIL.hitLetter = function(letter){
+
+	if(typeof letter != 'string' || letter.length != 1 || letter.charCodeAt(0) < 65 || letter.charCodeAt(0) > 90){
+		return;
+	}
+
+	if(letter == SNAIL.currentText[SNAIL.currentText.length-1]){
+		return;
+	}
+	
 	console.log("Hit letter: " + letter);
 
 	var words = SNAIL.levelWords[SNAIL.level];
@@ -287,16 +306,19 @@ SNAIL.hitLetter = function(letter){
 	
 	if(!isMatch){
 		console.log("failure :(");
+		SNAIL.player.state = "sad";
 		SNAIL.currentText = "";
 	}else{
 		if(matchedWordCompletely){
 			console.log("completly!");
+			SNAIL.player.state = "happy";
 
 			SNAIL.level++;
 			matches = [];
 			SNAIL.currentText = "";
 		}else{
 			SNAIL.currentText = SNAIL.currentText+letter;
+			SNAIL.player.state = "happy";
 			console.log(matches,"matching... keep going!");
 		}
 	}

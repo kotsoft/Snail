@@ -1,7 +1,7 @@
 SNAIL.levelWords = {
 
-	0 : ['cat','foo','bar','fit'],
-	1 : ['dog','woof'],
-	2 : ['test','boo']
+	0 : ['CAT','FOO','BAR','FIT'],
+	1 : ['DOG','WOOF'],
+	2 : ['TEST','BOO']
 
 };
