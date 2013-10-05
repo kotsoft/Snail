@@ -42,9 +42,10 @@ SNAIL.startGame = function(){
 	SNAIL.initBlocks();
 
 	SNAIL.player.init(48,1344);
-  SNAIL.dog = new Animal('dog');
-  SNAIL.cat = new Animal('cat');
-}
+  
+	SNAIL.dog = new Animal('dog');
+	SNAIL.cat = new Animal('cat');
+};
 
 SNAIL.initBlocks = function(){
   SNAIL.staticBlocks = SNAIL.levelData;
@@ -268,16 +269,17 @@ SNAIL.drawMap = function(offX,offY) {
 };
 
 // *** Game Progress Events *** //
+SNAIL.lastLetter = "";
 SNAIL.hitLetter = function(letter){
 
 	if(typeof letter != 'string' || letter.length != 1 || letter.charCodeAt(0) < 65 || letter.charCodeAt(0) > 90){
 		return;
 	}
 
-	if(letter == SNAIL.currentText[SNAIL.currentText.length-1]){
+	if(letter == SNAIL.lastLetter){
 		return;
 	}
-	
+	SNAIL.lastLetter = letter;
 	console.log("Hit letter: " + letter);
 
 	var words = SNAIL.levelWords[SNAIL.level];

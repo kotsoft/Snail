@@ -3,12 +3,25 @@ SNAIL.player = {
   moveRight: false,
   jump: false,
   distance: 0,
+  state: 'normal',
+  setToNormal: 0,
   init: function(x, y) {
     this.x = this.xprev = x;
     this.y = this.yprev = y;
     this.shellImg = SNAIL.images['snail-body-shl-prpl'];
-    this.bodyImg1 = SNAIL.images['snail-body-blu'];
-    this.bodyImg2 = SNAIL.images['snail-body-blu-squish'];
+    this.bodyImgs = {};
+    this.bodyImgs.sad = [
+      SNAIL.images['snail-body-pnk'],
+      SNAIL.images['snail-body-pnk-squish']
+    ];
+    this.bodyImgs.happy = [
+      SNAIL.images['snail-body-yel'],
+      SNAIL.images['snail-body-yel-squish']
+    ];
+    this.bodyImgs.normal = [
+      SNAIL.images['snail-body-blu'],
+      SNAIL.images['snail-body-blu-squish']
+    ];
   },
   update: function(dt, time){
     var dx = this.dx = this.x - this.xprev;
@@ -52,9 +65,21 @@ SNAIL.player = {
   },
   draw: function(time, x, y) {
     var ctx = SNAIL.ctx;
+
+    // Choose a different body img depending on the state.
+    var bodyImgs = this.bodyImgs[this.state];
+
+    // If state is not `normal`, set it to `normal` in some time.
+    if (this.state !== 'normal') {
+      this.setToNormal++;
+      if (this.setToNormal === 30) {
+        this.setToNormal = 0;
+        this.state = 'normal';
+      }
+    }
     var bodyImg = (!this.moveLeft && !this.moveRight) &&
       this.dx === 0 || this.moveTime % 26 < 13
-      ? this.bodyImg1 : this.bodyImg2;
+      ? bodyImgs[0] : bodyImgs[1];
     if (this.faceLeft) {
       ctx.save();
       ctx.scale(-1, 1);
