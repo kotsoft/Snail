@@ -1,6 +1,7 @@
 var SNAIL = {}; //Main namespace
 
 SNAIL.canvasID = "#gameCanvas";
+SNAIL.wordsCanvasID = "#wordsCanvas";
 SNAIL.staticBlocks = [];
 SNAIL.lastFrameTime = 0;
 
@@ -14,16 +15,23 @@ SNAIL.numBlocksHeight = 8;
 SNAIL.canvasRenderWidth  = SNAIL.numBlocksHeight  * SNAIL.blockWidth;
 SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 
+SNAIL.dirtyWordsCanvas = true;
 SNAIL.level = 0;
 SNAIL.currentText = "";
 SNAIL.matches = [];
 SNAIL.gravity = .8;
 
 SNAIL.startGame = function(){
+	SNAIL.loadImageData();
+
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
+	SNAIL.wordsCanvas = $(SNAIL.wordsCanvasID)[0];
   // SNAIL.canvas.width = SNAIL.canvasRenderWidth;
   // SNAIL.canvas.height = SNAIL.canvasRenderHeight;
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
+	SNAIL.wordsctx = SNAIL.wordsCanvas.getContext('2d');
+	SNAIL.wordsCanvas.width = 800;
+	SNAIL.wordsCanvas.height = SNAIL.canvasRenderHeight;
 
 	SNAIL.canvas.width = 800;
 	SNAIL.canvas.height = SNAIL.canvasRenderHeight;
@@ -73,7 +81,67 @@ SNAIL.render = function(){
 	SNAIL.drawBackground();
 	SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,0);
 	SNAIL.player.draw(SNAIL.canvas.width/2,SNAIL.player.y);
+	if(SNAIL.dirtyWordsCanvas){
+		SNAIL.dirtyWordsCanvas = false;
+		SNAIL.drawWords();
+	}
 };
+
+SNAIL.drawWords = function(){
+	var currentText = SNAIL.currentText;
+	SNAIL.wordsctx.clearRect(0, 0, SNAIL.wordsCanvas.width, SNAIL.wordsCanvas.height);
+	
+
+	if(SNAIL.matches.length == 0){
+		for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
+			SNAIL.matches[i] = i;
+		}
+	}
+	var numWords = SNAIL.matches.length;//SNAIL.levelWords[SNAIL.level].length;
+	console.log(SNAIL.matches,SNAIL.currentText)
+
+
+	for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
+		var word = SNAIL.levelWords[SNAIL.level][i];
+		for(var j = 0; j < word.length; j++){
+			var block = SNAIL.images['Z'];
+			if (typeof block == 'object') {
+				var imgX = j * SNAIL.blockWidth;
+				var imgY = i * SNAIL.blockHeight;
+				SNAIL.wordsctx.drawImage(block, imgX, imgY);
+			}
+		}
+	}
+
+	for(var i = 0; i < numWords; i++){
+		var word = SNAIL.levelWords[SNAIL.level][SNAIL.matches[i]];
+		for(var j = currentText.length; j < word.length; j++){
+			var block = SNAIL.images[word[j].toUpperCase()];
+			if (typeof block == 'object') {
+				var imgX = j * SNAIL.blockWidth;
+				var imgY = i * SNAIL.blockHeight;
+				SNAIL.wordsctx.drawImage(block, imgX, imgY);
+			}
+		}
+	}
+};
+
+SNAIL.loadImageData = function(){
+	// var tmpCanvas = document.createElement('canvas');
+	// var context = tmpCanvas.getContext('2d');
+	// for(key in SNAIL.images){
+	// 	var image = SNAIL.images[key];
+	// 	console.log(image);
+
+ //        var imageWidth = image.width;
+ //        var imageHeight = image.height;
+
+ //        context.drawImage(image, 0, 0);
+
+ //        var imageData = context.getImageData(0, 0, imageWidth, imageHeight);
+ //        var data = imageData.data;
+	// }
+}
 
 SNAIL.loadImages = function(callback) {
   var funcs = [];
@@ -177,17 +245,18 @@ SNAIL.hitLetter = function(letter){
 		if(matchedWordCompletely){
 			console.log("completly!");
 
+			SNAIL.level++;
+			matches = [];
 			SNAIL.currentText = "";
 		}else{
+			SNAIL.currentText = SNAIL.currentText+letter;
 			console.log(matches,"matching... keep going!");
 		}
 	}
 
-	if(matchesWord){
-		SNAIL.currentText += letter;
-	}
-
 	SNAIL.matches = matches;
+	SNAIL.dirtyWordsCanvas = true;
+
 };
 
 SNAIL.staticCollision = function(x, y, dx, dy) {
