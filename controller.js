@@ -1,6 +1,7 @@
 var SNAIL = {}; //Main namespace
 
 SNAIL.canvasID = "#gameCanvas";
+SNAIL.wordsCanvasID = "#wordsCanvas";
 SNAIL.staticBlocks = [];
 SNAIL.lastFrameTime = 0;
 
@@ -14,6 +15,7 @@ SNAIL.numBlocksHeight = 30;
 SNAIL.canvasRenderWidth  = SNAIL.numBlocksHeight  * SNAIL.blockWidth;
 SNAIL.canvasRenderHeight = SNAIL.numBlocksHeight * SNAIL.blockHeight;
 
+SNAIL.dirtyWordsCanvas = true;
 SNAIL.level = 0;
 SNAIL.currentText = "";
 SNAIL.matches = [];
@@ -24,10 +26,16 @@ SNAIL.edit = true;
 SNAIL.currentBlock = 0;
 
 SNAIL.startGame = function(){
+	SNAIL.loadImageData();
+
 	SNAIL.canvas = $(SNAIL.canvasID)[0];
+	// SNAIL.wordsCanvas = $(SNAIL.wordsCanvasID)[0];
   // SNAIL.canvas.width = SNAIL.canvasRenderWidth;
   // SNAIL.canvas.height = SNAIL.canvasRenderHeight;
 	SNAIL.ctx = SNAIL.canvas.getContext('2d');
+	// SNAIL.wordsctx = SNAIL.wordsCanvas.getContext('2d');
+	// SNAIL.wordsCanvas.width = 800;
+	// SNAIL.wordsCanvas.height = SNAIL.canvasRenderHeight;
 
 	SNAIL.canvas.width = window.innerWidth;
 	SNAIL.canvas.height = window.innerHeight;
@@ -60,7 +68,7 @@ SNAIL.animloop = function(time){
     SNAIL.render(time);
 
     var dt = time - SNAIL.lastFrameTime;
-	SNAIL.updateModel(dt);
+	SNAIL.updateModel(dt, time);
 
 	SNAIL.lastFrameTime = time;
     requestNextAnimationFrame(SNAIL.animloop);
@@ -97,7 +105,65 @@ SNAIL.render = function(time){
       }
     }
   }
+	if(true||SNAIL.dirtyWordsCanvas){
+		SNAIL.dirtyWordsCanvas = false;
+		SNAIL.drawWords(0,0+SNAIL.blockHeight*0.5|0)
+	}
 };
+
+SNAIL.drawWords = function(offX,offY){
+	var currentText = SNAIL.currentText;
+	// SNAIL.wordsctx.clearRect(0, 0, SNAIL.wordsCanvas.width, SNAIL.wordsCanvas.height);
+
+	if(SNAIL.matches.length == 0){
+		for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
+			SNAIL.matches[i] = i;
+		}
+	}
+	var numWords = SNAIL.matches.length;//SNAIL.levelWords[SNAIL.level].length;
+	// console.log(SNAIL.matches,SNAIL.currentText)
+
+	for(var i = 0; i < SNAIL.levelWords[SNAIL.level].length; i++){
+		var word = SNAIL.levelWords[SNAIL.level][i];
+		for(var j = 0; j < word.length; j++){
+			var block = SNAIL.images['Z'];
+			if (typeof block == 'object') {
+				var imgX = j * SNAIL.blockWidth;
+				var imgY = i * SNAIL.blockHeight;
+				SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
+			}
+		}
+	}
+
+	for(var i = 0; i < numWords; i++){
+		var word = SNAIL.levelWords[SNAIL.level][SNAIL.matches[i]];
+		for(var j = currentText.length; j < word.length; j++){
+			var block = SNAIL.images[word[j].toUpperCase()];
+			if (typeof block == 'object') {
+				var imgX = j * SNAIL.blockWidth;
+				var imgY = i * SNAIL.blockHeight;
+				SNAIL.ctx.drawImage(block, imgX+offX, imgY+offY);
+			}
+		}
+	}
+};
+
+SNAIL.loadImageData = function(){
+	// var tmpCanvas = document.createElement('canvas');
+	// var context = tmpCanvas.getContext('2d');
+	// for(key in SNAIL.images){
+	// 	var image = SNAIL.images[key];
+	// 	console.log(image);
+
+ //        var imageWidth = image.width;
+ //        var imageHeight = image.height;
+
+ //        context.drawImage(image, 0, 0);
+
+ //        var imageData = context.getImageData(0, 0, imageWidth, imageHeight);
+ //        var data = imageData.data;
+	// }
+}
 
 SNAIL.loadImages = function(callback) {
   var funcs = [];
@@ -133,14 +199,14 @@ function getImage(key) {
   };
 }
 
-SNAIL.updateModel = function(dt){
+SNAIL.updateModel = function(dt, time){
 
 	//SNAIL.player.update(dt/1000*60);
 
 	//Random
 	//SNAIL.staticBlocks[8*Math.random()|0][8*Math.random()|0] = Math.random() < 0.5 ? 'C' : 'B';
 
-	SNAIL.player.update(1);
+	SNAIL.player.update(1, time);
 	// console.log(dt);
 
 };
@@ -201,17 +267,18 @@ SNAIL.hitLetter = function(letter){
 		if(matchedWordCompletely){
 			console.log("completly!");
 
+			SNAIL.level++;
+			matches = [];
 			SNAIL.currentText = "";
 		}else{
+			SNAIL.currentText = SNAIL.currentText+letter;
 			console.log(matches,"matching... keep going!");
 		}
 	}
 
-	if(matchesWord){
-		SNAIL.currentText += letter;
-	}
-
 	SNAIL.matches = matches;
+	SNAIL.dirtyWordsCanvas = true;
+
 };
 
 SNAIL.staticCollision = function(x, y, dx, dy) {
