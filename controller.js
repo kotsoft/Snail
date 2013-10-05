@@ -209,6 +209,11 @@ SNAIL.drawBackground = function(time) {
   var ctx = SNAIL.ctx;
   ctx.fillStyle = SNAIL.bgColor;
   ctx.fillRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
+  SNAIL.drawRectBackground(time);
+};
+
+SNAIL.drawRectBackground = function(time) {
+  var ctx = SNAIL.ctx;
   var width = SNAIL.canvas.width;
   var height = SNAIL.canvas.height;
   var ratio = width / height;
@@ -223,7 +228,7 @@ SNAIL.drawBackground = function(time) {
   var starty = startx / ratio;
 
   do {
-    ctx.fillStyle = n % 2 === 0 ? '#0B2161' : '#0080FF';
+    ctx.fillStyle = n % 2 === 0 ? '#BDBDBD' : '#A9BCF5';
     var x1 = startx + lenx * n;
     var y1 = starty + leny * n;
     var x2 = width - x1 * 2;
