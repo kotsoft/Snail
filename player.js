@@ -13,11 +13,11 @@ SNAIL.player = {
   update: function(dt, time){
     var dx = this.dx = this.x - this.xprev;
     if (this.moveLeft) {
-      dx -= .8;
+      dx -= 1;
       this.moveTime++;
       this.distance += dx;
     } else if (this.moveRight) {
-      dx += .8;
+      dx += 1;
       this.moveTime++;
       this.distance += dx;
     } else {
@@ -29,7 +29,7 @@ SNAIL.player = {
     } else if (dx < -10) {
       dx = -10;
     }
-    dx *= .9;
+    dx *= .85;
 
     if (dx < 0) {
       this.faceLeft = true;
@@ -42,10 +42,10 @@ SNAIL.player = {
     this.yprev = this.y;
     this.x += dx;
     this.y += dy;
-    var newPos = SNAIL.staticCollision(this.x, this.y, dx, dy);
+    var newPos = SNAIL.staticCollision(this.x, this.y, dx, dy, true);
     this.x = newPos[0];
     if (this.jump && newPos[1] < this.y) {
-      this.y = this.yprev - 15;
+      this.y = this.yprev - 16;
     } else {
       this.y = newPos[1];
     }
