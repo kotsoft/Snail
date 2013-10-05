@@ -14,6 +14,8 @@ $(function() {
   var canvas = $('#gameCanvas')[0];
   var ctx = canvas.getContext('2d');
 
+  var player = Player();
+
   for (var x = 0; x < 100; x++) {
     staticBlocks.push([0,0,0,0,0,0,0,1]);
   }
