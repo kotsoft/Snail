@@ -25,7 +25,11 @@ $(function() {
   var player = SNAIL.player;//Player();
 
   for (var x = 0; x < blocksX; x++) {
-    staticBlocks.push(['C','A','E','P',0,'B','B','A']);
+    if (x % 4 == 0) {
+      staticBlocks.push(['C','A','E','P',0,0,'B','A']);
+    } else {
+      staticBlocks.push(['C','A','E','P',0,0,0,'A']);
+    }
   }
 
   function render() {

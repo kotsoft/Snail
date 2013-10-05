@@ -56,6 +56,7 @@ SNAIL.staticBlocks = staticBlocks;
 SNAIL.render = function(){
 
 	SNAIL.drawMap();
+  SNAIL.player.draw();
 };
 
 SNAIL.updateModel = function(dt){
@@ -65,7 +66,7 @@ SNAIL.updateModel = function(dt){
 	//Random
 	//SNAIL.staticBlocks[8*Math.random()|0][8*Math.random()|0] = Math.random() < 0.5 ? 'C' : 'B';
 
-	SNAIL.player.update(dt);
+	SNAIL.player.update(1);
 	// console.log(dt);
 
 };
@@ -153,15 +154,26 @@ SNAIL.initEvents = function(){
 
 	$(document).keydown(function (e) {
 		if(e.which == 37){
-			SNAIL.movePlayer('left');
+      SNAIL.player.moveLeft = true;
 		}else if(e.which == 39){
-			SNAIL.movePlayer('right');
+      SNAIL.player.moveRight = true;
 		}else if(e.which == 38){
-			SNAIL.movePlayer('up');
+			SNAIL.player.jump = true;
 		}else if(e.which == 40){
 			SNAIL.movePlayer('down');
 		}
 	});
+  $(document).keyup(function (e) {
+    if(e.which == 37){
+      SNAIL.player.moveLeft = false;
+    }else if(e.which == 39){
+      SNAIL.player.moveRight = false;
+    }else if(e.which == 38){
+      SNAIL.player.jump = false;
+    }else if(e.which == 40){
+      SNAIL.movePlayer('down');
+    }
+  });
 };
 
 // Reprinted from Core HTML5 Canvas
