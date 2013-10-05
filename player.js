@@ -1,5 +1,3 @@
-var PI2 = Math.PI * 2;
-
 SNAIL.player = {
   init: function(x, y) {
     this.x = this.xprev = x;
@@ -18,16 +16,8 @@ SNAIL.player = {
   },
   draw: function() {
     var ctx = SNAIL.ctx;
-    var radius = ~~(SNAIL.blockWidth / 2);
-    var centerX = this.x + radius;
-    var centerY = this.y + radius;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, PI2);
-    ctx.fillStyle = 'rgba()';
-    ctx.fill();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = '#030';
-    ctx.stroke();
-    ctx.closePath();
+    var img = SNAIL.images.SNAIL_PNK;
+    console.log(img);
+    ctx.drawImage(img, this.x, this.y);
   },
 }
