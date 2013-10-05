@@ -1,6 +1,6 @@
 var PI2 = Math.PI * 2;
 
-sNAIL.player = {
+SNAIL.player = {
   init: function(x, y) {
     this.x = this.xprev = x;
     this.y = this.yprev = y;
