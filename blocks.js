@@ -61,5 +61,6 @@ SNAIL.imageFiles = [
   'snail-body-pnk',
   'snail-body-shl-pnk',
   'snail-body-shl-prpl',
+  'rock-blocks'
 ];
 SNAIL.images = {};
