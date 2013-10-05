@@ -49,8 +49,7 @@ SNAIL.animloop = function(time){
 SNAIL.main = function(){
   SNAIL.loadImages(function() {
     SNAIL.startGame();
-    SNAIL.render();
-    //requestNextAnimationFrame(SNAIL.animloop);
+    requestNextAnimationFrame(SNAIL.animloop);
   });
 };
 window.onload = SNAIL.main;
