@@ -22,6 +22,8 @@ $(function() {
   canvas.height = height;
   ctx = canvas.getContext('2d');
 
+  var player = Player();
+
   for (var x = 0; x < blocksX; x++) {
     staticBlocks.push([0,0,0,0,0,0,'B','A']);
   }
