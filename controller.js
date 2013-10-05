@@ -286,7 +286,7 @@ SNAIL.hitLetter = function(letter){
 		return;
 	}
 	SNAIL.lastLetter = letter;
-	console.log("Hit letter: " + letter);
+	// console.log("Hit letter: " + letter);
 
 	var words = SNAIL.levelWords[SNAIL.level];
 	var isMatch = false;
@@ -323,7 +323,7 @@ SNAIL.hitLetter = function(letter){
 		SNAIL.lastLetter = "";
 	}else{
 		if(matchedWordCompletely){
-			console.log("completly!");
+			// console.log("completly!");
 			SNAIL.player.state = "happy";
 
 			SNAIL.level++;
@@ -333,7 +333,7 @@ SNAIL.hitLetter = function(letter){
 		}else{
 			SNAIL.currentText = SNAIL.currentText+letter;
 			SNAIL.player.state = "happy";
-			console.log(matches,"matching... keep going!");
+			// console.log(matches,"matching... keep going!");
 		}
 	}
 
