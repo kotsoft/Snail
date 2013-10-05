@@ -2,6 +2,7 @@ SNAIL.player = {
   moveLeft: false,
   moveRight: false,
   jump: false,
+  distance: 0,
   init: function(x, y) {
     this.x = this.xprev = x;
     this.y = this.yprev = y;
@@ -14,9 +15,11 @@ SNAIL.player = {
     if (this.moveLeft) {
       dx -= .8;
       this.moveTime++;
+      this.distance += dx;
     } else if (this.moveRight) {
       dx += .8;
       this.moveTime++;
+      this.distance += dx;
     } else {
       this.moveTime = 0;
     }

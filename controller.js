@@ -20,6 +20,7 @@ SNAIL.level = 0;
 SNAIL.currentText = "";
 SNAIL.matches = [];
 SNAIL.gravity = .8;
+SNAIL.bgColor = '#fff';
 
 // Variables for editor
 SNAIL.edit = true;
@@ -83,7 +84,7 @@ SNAIL.main = function(){
 window.onload = SNAIL.main;
 
 SNAIL.render = function(time){
-	SNAIL.drawBackground();
+	SNAIL.drawBackground(time);
 	
   if (SNAIL.edit) {
     SNAIL.drawMap(-SNAIL.player.x+SNAIL.canvas.width/2,-SNAIL.player.y+SNAIL.canvas.height/2);
@@ -211,8 +212,32 @@ SNAIL.updateModel = function(dt, time){
 
 };
 
-SNAIL.drawBackground = function() {
-  SNAIL.ctx.clearRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
+SNAIL.drawBackground = function(time) {
+  var ctx = SNAIL.ctx;
+  ctx.fillStyle = SNAIL.bgColor;
+  ctx.fillRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
+  var width = SNAIL.canvas.width;
+  var height = SNAIL.canvas.height;
+  var ratio = width / height;
+  var midWidth = width / 2;
+  var sect = 40;
+  var lenx = width / sect;
+  var leny = height / sect;
+  var n = 0;
+  time = time * 0.02 + SNAIL.player.distance * 0.1;
+  var lenx2 = lenx * 2;
+  var startx = -time % lenx2;
+  var starty = startx / ratio;
+
+  do {
+    ctx.fillStyle = n % 2 === 0 ? '#0B2161' : '#0080FF';
+    var x1 = startx + lenx * n;
+    var y1 = starty + leny * n;
+    var x2 = width - x1 * 2;
+    var y2 = height - y1 * 2;
+    ctx.fillRect(x1, y1, x2, y2);
+    n++;
+  } while (x1 < midWidth);
 };
 
 SNAIL.drawMap = function(offX,offY) {
