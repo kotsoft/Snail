@@ -8,6 +8,8 @@ function Animal(type) {
   }
   
   this.blinking = false;
+  this.firstDraw = true;
+  this.aliveTime = 0;
   this.wordComplete = false;
 }
 
@@ -22,6 +24,17 @@ Animal.prototype.draw = function(time, x, y) {
   this.blinking = maybeBlink && ~~(time * 0.01) % 3 === 0;
 
   var eyesImg = this.blinking ? this.eyesClosedImg : this.eyesOpenImg;
+
+  this.ctx.save();
+  if (this.firstDraw) {
+    this.aliveTime++;
+    var scale = this.aliveTime / 50;
+    this.ctx.scale(1, scale);
+    if (this.aliveTime === 50) {
+      this.firstDraw = false;
+    }
+  }
   this.ctx.drawImage(bodyImg, x, y);
   this.ctx.drawImage(eyesImg, x, y);
+  this.ctx.restore();
 };
