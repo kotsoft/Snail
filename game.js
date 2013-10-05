@@ -81,7 +81,7 @@ function getImage(key, url) {
 }
 
 SNAIL.drawBackground = function() {
-  ctx.clearRect(0, 0, width, height);
+  ctx.clearRect(0, 0, SNAIL.canvas.width, SNAIL.canvas.height);
 }
 
 SNAIL.drawMap = function() {
