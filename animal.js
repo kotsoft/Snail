@@ -12,9 +12,9 @@ function Animal(type) {
 }
 
 Animal.prototype.draw = function(time, x, y) {
-  var i = ~~(time * 0.002) % (this.bodyImgs.length * 2 - 1);
+  var i = ~~(time * 0.002) % (this.bodyImgs.length * 2 - 2);
   if (i >= this.bodyImgs.length) {
-    i = this.bodyImgs.length - (i - this.bodyImgs.length) - 1;
+    i = this.bodyImgs.length - (i - this.bodyImgs.length) - 2;
   }
   var bodyImg = this.bodyImgs[i];
 
