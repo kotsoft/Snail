@@ -319,7 +319,7 @@ SNAIL.hitLetter = function(letter){
 	}
 	
 	if(!isMatch){
-		console.log("failure :(");
+		// console.log("failure :(");
 		SNAIL.player.state = "sad";
 		SNAIL.currentText = "";
 		SNAIL.lastLetter = "";
